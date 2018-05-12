@@ -30,7 +30,7 @@ public final class GDGaugeView: UIView {
     public var unitTextFont: UIFont = UIFont.systemFont(ofSize: 12)
     public var textFont: UIFont = UIFont.systemFont(ofSize: 16)
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         
         setupView()
