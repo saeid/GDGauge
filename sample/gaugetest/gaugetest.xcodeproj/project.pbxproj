@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3622439B20A6AF61000A2D5F /* GDGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622439A20A6AF61000A2D5F /* GDGauge.swift */; };
+		3622439F20A6B0F7000A2D5F /* GDGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622439E20A6B0F7000A2D5F /* GDGauge.swift */; };
 		364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6320A63D99009BCA62 /* AppDelegate.swift */; };
 		364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6520A63D99009BCA62 /* ViewController.swift */; };
 		364E5C6920A63D99009BCA62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6720A63D99009BCA62 /* Main.storyboard */; };
@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3622439A20A6AF61000A2D5F /* GDGauge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GDGauge.swift; path = GDGauge/GDGauge.swift; sourceTree = "<group>"; };
+		3622439E20A6B0F7000A2D5F /* GDGauge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GDGauge.swift; path = GDGauge/GDGauge/GDGauge.swift; sourceTree = "<group>"; };
 		364E5C6020A63D99009BCA62 /* gaugetest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gaugetest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364E5C6320A63D99009BCA62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		364E5C6520A63D99009BCA62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 		364E5C7520A63DC0009BCA62 /* source */ = {
 			isa = PBXGroup;
 			children = (
-				3622439A20A6AF61000A2D5F /* GDGauge.swift */,
+				3622439E20A6B0F7000A2D5F /* GDGauge.swift */,
 			);
 			name = source;
 			path = ../../../source;
@@ -147,7 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3622439B20A6AF61000A2D5F /* GDGauge.swift in Sources */,
+				3622439F20A6B0F7000A2D5F /* GDGauge.swift in Sources */,
 				364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */,
 				364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */,
 			);
