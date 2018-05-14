@@ -7,6 +7,8 @@ Completely written with ShapeLayers and CoreGraphic to get a most clean and smoo
 
 ![gauge](https://user-images.githubusercontent.com/9967486/39947113-fc738ec8-5585-11e8-9276-af0da2057909.png)
 
+![simulator screen shot - iphone x - 2018-05-14 at 20 01 25](https://user-images.githubusercontent.com/9967486/40007543-5107d6dc-57b2-11e8-834c-a1062ded1a7b.png)
+
 ![gauge](https://user-images.githubusercontent.com/9967486/39946456-7a3569c4-5583-11e8-8e54-8e10ed4774ee.gif)
 
 
