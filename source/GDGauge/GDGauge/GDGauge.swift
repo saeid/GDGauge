@@ -15,16 +15,17 @@ public final class GDGaugeView: UIView {
     fileprivate var displayLink: CADisplayLink?
     fileprivate var absStartTime: CFAbsoluteTime?
     fileprivate var baseWidth: CGFloat = 10.0
+    fileprivate var points: Int = 0
     
-    public var min: CGFloat = 0.0
-    public var max: CGFloat = 100.0
+    public var stepValue: CGFloat = 20
+    public var min: CGFloat = 0
+    public var max: CGFloat = 220
     public var currentValue: CGFloat = 0
-    public var points: Int = 16
     public var baseColor: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
     public var handleColor: UIColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1)
     public var sepratorColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
     public var textColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
-    public var unitText: String = "MB/S"
+    public var unitText: String = "km/h"
     public var unitTextFont: UIFont = UIFont.systemFont(ofSize: 12)
     public var textFont: UIFont = UIFont.systemFont(ofSize: 16)
     
@@ -37,6 +38,8 @@ public final class GDGaugeView: UIView {
     }
     
     public func setupView(){
+        points = Int((max - min) / stepValue)
+
         backgroundColor = UIColor.clear
         drawBaseCircle()
         drawHandle()
@@ -203,8 +206,15 @@ public final class GDGaugeView: UIView {
             let baseRad = degreeToRadian(degree: calcDegrees(point: CGFloat(i)))
             let endPoint = CGPoint(x: cos(-baseRad) * endValue+centerPoint.x, y: sin(-baseRad) * endValue + centerPoint.y)
             
-            let indicValue = Int(CGFloat(i) * (max - min) / CGFloat(points)) + Int(min)
-            let indicValueStr : String = String(indicValue)
+            var indicValue: CGFloat = 0
+            indicValue = stepValue * CGFloat(i) + min
+            
+            var indicValueStr : String = ""
+            if indicValue.truncatingRemainder(dividingBy: 1) == 0{
+                indicValueStr = String(Int(indicValue))
+            }else{
+                indicValueStr = String(Double(indicValue))
+            }
             let size: CGSize = textSize(str: indicValueStr, font: textFont)
             
             let xOffset = abs(cos(baseRad)) * size.width * 0.5

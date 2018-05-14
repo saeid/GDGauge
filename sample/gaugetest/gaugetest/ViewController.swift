@@ -25,10 +25,10 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         // -> speed.min = 0.0
         
         // Maximum value
-        // -> speed.max = 16
+        // -> speed.max = 16.0
         
-        // Number of sepration points
-        // -> speed.points = 8
+        // Determine each step value
+        // -> speed.stepValue = 4.0
         
         // Color of handle
         // -> speed.handleColor = UIColor.cyan

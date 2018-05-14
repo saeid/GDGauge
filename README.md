@@ -50,8 +50,8 @@ end
         // Maximum value
         speed.max = 16
         
-        // Number of sepration points
-        speed.points = 8
+        // Determine each step value
+        speed.stepValue = 4.0
         
         // Color of handle
         speed.handleColor = UIColor.cyan
