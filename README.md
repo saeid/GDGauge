@@ -71,6 +71,10 @@ end
         // Indicators text
         speed.textFont = UIFont.systemFont(ofSize: 20)
         view.addSubview(speed)
+
+        /// After configuring the component, call setupView() method to create the gauge view
+        speed.setupView() 
+
     }
 ```
 

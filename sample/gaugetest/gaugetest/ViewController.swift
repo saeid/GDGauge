@@ -49,6 +49,9 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         // -> speed.textFont = UIFont.systemFont(ofSize: 20)
         view.addSubview(speed)
         
+        /// After configuring the component, call setupView() method to create the gauge view
+        speed.setupView()
+        
         speedLabel = UILabel()
         speedLabel.font = UIFont.systemFont(ofSize: 17)
         speedLabel.textColor = UIColor.black
@@ -60,7 +63,7 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         
         slider = UISlider()
         slider.minimumValue = 0
-        slider.maximumValue = 16
+        slider.maximumValue = 100
         slider.isContinuous = true
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.addTarget(self, action: #selector(valChange(_:)), for: .valueChanged)
@@ -70,12 +73,13 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         slider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -25).isActive = true
         slider.bottomAnchor.constraint(equalTo: speedLabel.topAnchor, constant: -35).isActive = true
         
-        checkForSpeedTest()
+//        checkForSpeedTest()
     }
     
     /// Moving handle using slider
     @objc func valChange(_ sender: UISlider){
         // Set .currentValue of GDGaugeView to move the handle
+        print(sender.value)
         speed.currentValue = CGFloat(sender.value)
     }
     

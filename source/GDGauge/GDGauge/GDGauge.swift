@@ -17,12 +17,10 @@ public final class GDGaugeView: UIView {
     fileprivate var baseWidth: CGFloat = 10.0
     
     public var min: CGFloat = 0.0
-    public var max: CGFloat = 16.0
+    public var max: CGFloat = 100.0
     public var currentValue: CGFloat = 0
-    public var points: Int = 8
-    
+    public var points: Int = 16
     public var baseColor: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
-
     public var handleColor: UIColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1)
     public var sepratorColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
     public var textColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
@@ -32,17 +30,13 @@ public final class GDGaugeView: UIView {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setupView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        setupView()
     }
     
-    private func setupView(){
+    public func setupView(){
         backgroundColor = UIColor.clear
         drawBaseCircle()
         drawHandle()
@@ -55,7 +49,7 @@ public final class GDGaugeView: UIView {
         baseCircleShape.strokeColor = baseColor.cgColor
         baseCircleShape.lineWidth = baseWidth
         baseCircleShape.path = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true).cgPath
-    
+        
         layer.addSublayer(baseCircleShape)
     }
     
@@ -125,7 +119,7 @@ public final class GDGaugeView: UIView {
         let targetRad = degreeToRadian(degree: angle)
         let newX = midx - 20 * cos(targetRad)
         let newY = midy - 20 * sin(targetRad)
-
+        
         handlePath.addQuadCurve(to: leftPoint, controlPoint: CGPoint(x: newX, y: newY))
         handlePath.addLine(to: endPoint)
         handlePath.addLine(to: rightPoint)
@@ -155,7 +149,7 @@ public final class GDGaugeView: UIView {
             
             let startPoint = CGPoint(x: cos(-baseAngle) * startVal + centerPoint.x, y: sin(-baseAngle) * startVal + centerPoint.y)
             let endPoint = CGPoint(x: cos(-baseAngle) * endRad+centerPoint.x, y: sin(-baseAngle) * endRad + centerPoint.y)
-
+            
             let indicatorPath = UIBezierPath()
             indicatorPath.move(to: startPoint)
             indicatorPath.addLine(to: endPoint)
@@ -192,7 +186,7 @@ public final class GDGaugeView: UIView {
             let indicatorPath = UIBezierPath()
             indicatorPath.move(to: startPoint)
             indicatorPath.addLine(to: endPoint)
-
+            
             indicatorLayer.path = indicatorPath.cgPath
             indicatorLayer.fillColor = UIColor.clear.cgColor
             indicatorLayer.strokeColor = sepratorColor.cgColor
@@ -209,7 +203,7 @@ public final class GDGaugeView: UIView {
             let baseRad = degreeToRadian(degree: calcDegrees(point: CGFloat(i)))
             let endPoint = CGPoint(x: cos(-baseRad) * endValue+centerPoint.x, y: sin(-baseRad) * endValue + centerPoint.y)
             
-            let indicValue = Int(CGFloat(i) * max / CGFloat(points))
+            let indicValue = Int(CGFloat(i) * (max - min) / CGFloat(points)) + Int(min)
             let indicValueStr : String = String(indicValue)
             let size: CGSize = textSize(str: indicValueStr, font: textFont)
             
@@ -237,7 +231,7 @@ public final class GDGaugeView: UIView {
         let size = textSize(str: unitText, font: unitTextFont)
         
         let unitStrRect = CGRect(x: centerPoint.x - (size.width / 2), y: centerPoint.y + 45, width: size.width, height: size.height)
-
+        
         unitTextLayer.contentsScale = UIScreen.main.scale
         unitTextLayer.frame = unitStrRect
         unitTextLayer.string = unitText
@@ -252,12 +246,9 @@ extension GDGaugeView{
         if currentValue > max{
             currentValue = max
         }
-        if currentValue < min{
-            currentValue = min
-        }
         return startDegree - (currentValue * (360.0 - (endDegree - startDegree))) / max
     }
-
+    
     fileprivate func textSize(str: String, font: UIFont) -> CGSize{
         let attrib = [NSAttributedStringKey.font: font]
         return str.size(withAttributes: attrib)
