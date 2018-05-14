@@ -63,7 +63,7 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         
         slider = UISlider()
         slider.minimumValue = 0
-        slider.maximumValue = 100
+        slider.maximumValue = 220
         slider.isContinuous = true
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.addTarget(self, action: #selector(valChange(_:)), for: .valueChanged)
