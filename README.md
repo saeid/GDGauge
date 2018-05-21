@@ -4,10 +4,13 @@ Full Customizable, Beautiful gauge view.
 
 Completely written with ShapeLayers and CoreGraphic to get a most clean and smooth, everything!
 
+[ Now with more options to customize! ]
 
-![gauge](https://user-images.githubusercontent.com/9967486/39947113-fc738ec8-5585-11e8-9276-af0da2057909.png)
+![1](https://user-images.githubusercontent.com/9967486/40322974-4ccd8c1e-5d49-11e8-9adc-8c8569335484.png)
 
-![simulator screen shot - iphone x - 2018-05-14 at 20 01 25](https://user-images.githubusercontent.com/9967486/40007543-5107d6dc-57b2-11e8-834c-a1062ded1a7b.png)
+
+![2](https://user-images.githubusercontent.com/9967486/40007543-5107d6dc-57b2-11e8-834c-a1062ded1a7b.png)
+
 
 ![gauge](https://user-images.githubusercontent.com/9967486/39946456-7a3569c4-5583-11e8-8e54-8e10ed4774ee.gif)
 
@@ -43,9 +46,22 @@ end
 
         // Create and instatiate the view and set parameters
         speed = GDGaugeView(frame: view.bounds)
+        
         // Set main gauge view color
         speed.baseColor = UIColor.cyan
         
+        // Show circle border
+        speed.showBorder = true
+        
+        // Show full circle border if .showBorder is set to true
+        speed.fullBorder = false
+        
+        // Set starting degree based on zero degree on bottom center of circle space
+        speed.startDegree = 45.0
+        
+        // Set ending degree based on zero degree on bottom center of circle space
+        speed.endDegree = 270.0
+
         // Minimum value
         speed.min = 0.0
         
