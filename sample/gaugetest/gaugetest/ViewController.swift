@@ -21,6 +21,18 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         // Set main gauge view color
         // -> speed.baseColor = UIColor.cyan
         
+        // Show circle border
+        // -> speed.showBorder = false
+        
+        // Show full circle border if .showBorder is set to true
+        // -> speed.fullBorder = true
+        
+        // Set starting degree based on zero degree on bottom center of circle space
+        // -> speed.startDegree = 45.0
+        
+        // Set ending degree based on zero degree on bottom center of circle space
+        // -> speed.endDegree = 270.0
+        
         // Minimum value
         // -> speed.min = 0.0
         
