@@ -10,13 +10,17 @@ import UIKit
 public final class GDGaugeView: UIView {
     fileprivate var baseCircleShape: CAShapeLayer!
     fileprivate var handleShape: CAShapeLayer!
-    fileprivate var startDegree: CGFloat = 225.0
-    fileprivate var endDegree: CGFloat = 315.0
+    fileprivate var calculatedStartDegree: CGFloat = 0.0
+    fileprivate var calculatedEndDegree: CGFloat = 0.0
     fileprivate var displayLink: CADisplayLink?
     fileprivate var absStartTime: CFAbsoluteTime?
     fileprivate var baseWidth: CGFloat = 10.0
     fileprivate var points: Int = 0
     
+    public var showBorder: Bool = true
+    public var fullBorder: Bool = false
+    public var startDegree: CGFloat = 45.0
+    public var endDegree: CGFloat = 315.0
     public var stepValue: CGFloat = 20
     public var min: CGFloat = 0
     public var max: CGFloat = 220
@@ -39,19 +43,34 @@ public final class GDGaugeView: UIView {
     
     public func setupView(){
         points = Int((max - min) / stepValue)
-
+        calculatedStartDegree = 270.0 - startDegree
+        calculatedEndDegree = 270.0 - endDegree + 360
+        
         backgroundColor = UIColor.clear
-        drawBaseCircle()
+        
+        if showBorder{
+            drawBaseCircle()
+        }
         drawHandle()
         drawPoints()
     }
     
     private func drawBaseCircle(){
+        let startRad: CGFloat = 360.0 - calculatedEndDegree
+        let endRad: CGFloat = 360.0 - calculatedStartDegree
+        
         baseCircleShape = CAShapeLayer()
         baseCircleShape.fillColor = nil
         baseCircleShape.strokeColor = baseColor.cgColor
         baseCircleShape.lineWidth = baseWidth
-        baseCircleShape.path = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true).cgPath
+        
+        var borderPath: CGPath!
+        if fullBorder{
+            borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: false).cgPath
+        }else{
+            borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: degreeToRadian(degree: startRad), endAngle: degreeToRadian(degree: endRad), clockwise: false).cgPath
+        }
+        baseCircleShape.path = borderPath
         
         layer.addSublayer(baseCircleShape)
     }
@@ -162,7 +181,7 @@ public final class GDGaugeView: UIView {
             indicatorLayer.strokeColor = sepratorColor.cgColor
             indicatorLayer.lineWidth = indicWidth
             
-            baseCircleShape.addSublayer(indicatorLayer)
+            layer.addSublayer(indicatorLayer)
         }
     }
     
@@ -195,7 +214,7 @@ public final class GDGaugeView: UIView {
             indicatorLayer.strokeColor = sepratorColor.cgColor
             indicatorLayer.lineWidth = indicWidth
             
-            baseCircleShape.addSublayer(indicatorLayer)
+            layer.addSublayer(indicatorLayer)
         }
     }
     
@@ -231,7 +250,8 @@ public final class GDGaugeView: UIView {
             textLayer.font = unitTextFont
             textLayer.fontSize = unitTextFont.pointSize
             textLayer.foregroundColor = textColor.cgColor
-            baseCircleShape.addSublayer(textLayer)
+            
+            layer.addSublayer(textLayer)
         }
         
         let unitTextLayer = CATextLayer()
@@ -246,7 +266,8 @@ public final class GDGaugeView: UIView {
         unitTextLayer.frame = unitStrRect
         unitTextLayer.string = unitText
         unitTextLayer.foregroundColor = textColor.cgColor
-        baseCircleShape.addSublayer(unitTextLayer)
+        
+        layer.addSublayer(unitTextLayer)
     }
 }
 
@@ -256,7 +277,7 @@ extension GDGaugeView{
         if currentValue > max{
             currentValue = max
         }
-        return startDegree - (currentValue * (360.0 - (endDegree - startDegree))) / max
+        return calculatedStartDegree - (currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))) / max
     }
     
     fileprivate func textSize(str: String, font: UIFont) -> CGSize{
@@ -266,11 +287,11 @@ extension GDGaugeView{
     
     fileprivate func calcDegrees(point: CGFloat) -> CGFloat{
         if point == 0{
-            return startDegree
+            return calculatedStartDegree
         }else if point == CGFloat(points){
-            return endDegree
+            return calculatedEndDegree
         }else{
-            return startDegree - ((360.0 - (endDegree - startDegree)) / CGFloat(points)) * CGFloat(point)
+            return calculatedStartDegree - ((360.0 - (calculatedEndDegree - calculatedStartDegree)) / CGFloat(points)) * CGFloat(point)
         }
     }
     
