@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
 s.name             = "GDGauge"
-s.version          = "1.1.0"
+s.version          = "1.1.1"
 s.summary          = "Full Customizable, Beautiful, Easy to use gauge view"
 s.homepage         = "https://github.com/saeid/GDGauge"
 s.license          = 'MIT'
 s.author           = { "Saeid Basirnia" => "saeid.basirniaa@gmail.com" }
-s.source           = { :git => "https://github.com/saeid/GDGauge.git", :tag => "1.1.0"}
+s.source           = { :git => "https://github.com/saeid/GDGauge.git", :tag => "1.1.1"}
 
 s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
 s.platform     = :ios
