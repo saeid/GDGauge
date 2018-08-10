@@ -17,6 +17,8 @@ public final class GDGaugeView: UIView {
     fileprivate var baseWidth: CGFloat = 10.0
     fileprivate var points: Int = 0
     
+    public var unitImage: UIImage? = nil
+    public var unitImageTint: UIColor = UIColor.black
     public var showBorder: Bool = true
     public var fullBorder: Bool = false
     public var startDegree: CGFloat = 45.0
@@ -253,14 +255,24 @@ public final class GDGaugeView: UIView {
             
             layer.addSublayer(textLayer)
         }
-        
+        addUnit(centerPoint: centerPoint)
+    }
+    
+    private func addUnit(centerPoint: CGPoint){
+        if let _ = unitImage{
+            addImageUnit(point: centerPoint)
+        }else{
+            addTextUnit(point: centerPoint)
+        }
+    }
+    
+    private func addTextUnit(point: CGPoint){
         let unitTextLayer = CATextLayer()
-        
         unitTextLayer.font = unitTextFont
         unitTextLayer.fontSize = unitTextFont.pointSize
         let size = textSize(str: unitText, font: unitTextFont)
         
-        let unitStrRect = CGRect(x: centerPoint.x - (size.width / 2), y: centerPoint.y + 45, width: size.width, height: size.height)
+        let unitStrRect = CGRect(x: point.x - (size.width / 2), y: point.y + 45, width: size.width, height: size.height)
         
         unitTextLayer.contentsScale = UIScreen.main.scale
         unitTextLayer.frame = unitStrRect
@@ -268,6 +280,18 @@ public final class GDGaugeView: UIView {
         unitTextLayer.foregroundColor = textColor.cgColor
         
         layer.addSublayer(unitTextLayer)
+    }
+    
+    private func addImageUnit(point: CGPoint){
+        let imgSize = CGSize(width: 20, height: 20)
+        let unitRect = CGRect(x: point.x - (imgSize.width / 2), y: point.y + 45, width: imgSize.width, height: imgSize.height)
+
+        let imgLayer = CALayer()
+        let myImage = unitImage!.maskWithColor(color: unitImageTint)!.cgImage
+        imgLayer.frame = unitRect
+        imgLayer.contents = myImage
+        imgLayer.contentsGravity = kCAGravityResizeAspect
+        layer.addSublayer(imgLayer)
     }
 }
 
@@ -297,5 +321,28 @@ extension GDGaugeView{
     
     fileprivate func degreeToRadian(degree: CGFloat) -> CGFloat{
         return CGFloat(degree * CGFloat(Double.pi / 180.0))
+    }
+}
+
+extension UIImage {
+    func maskWithColor(color: UIColor) -> UIImage?{
+        let maskImage = cgImage!
+        let width = size.width
+        let height = size.height
+        let bounds = CGRect(x: 0, y: 0, width: width, height: height)
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+        let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
+        
+        context.clip(to: bounds, mask: maskImage)
+        context.setFillColor(color.cgColor)
+        context.fill(bounds)
+        
+        if let cgImage = context.makeImage(){
+            return UIImage(cgImage: cgImage)
+        }else{
+            return nil
+        }
     }
 }

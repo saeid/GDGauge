@@ -18,6 +18,8 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         
         // Create and instatiate the view and set parameters
         speed = GDGaugeView(frame: view.bounds)
+        speed.unitImage = #imageLiteral(resourceName: "fuel")
+        speed.unitImageTint = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
         // Set main gauge view color
         // -> speed.baseColor = UIColor.cyan
         
