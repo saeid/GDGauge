@@ -116,7 +116,7 @@ public final class GDGaugeView: UIView {
         
         absStartTime = CFAbsoluteTimeGetCurrent()
         displayLink = CADisplayLink(target: self, selector: #selector(updateHandle(_:)))
-        displayLink?.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
     
     @objc func updateHandle(_ sender: CADisplayLink){
@@ -290,7 +290,7 @@ public final class GDGaugeView: UIView {
         let myImage = unitImage!.maskWithColor(color: unitImageTint)!.cgImage
         imgLayer.frame = unitRect
         imgLayer.contents = myImage
-        imgLayer.contentsGravity = kCAGravityResizeAspect
+        imgLayer.contentsGravity = CALayerContentsGravity.resizeAspect
         layer.addSublayer(imgLayer)
     }
 }
@@ -305,7 +305,7 @@ extension GDGaugeView{
     }
     
     fileprivate func textSize(str: String, font: UIFont) -> CGSize{
-        let attrib = [NSAttributedStringKey.font: font]
+        let attrib = [NSAttributedString.Key.font: font]
         return str.size(withAttributes: attrib)
     }
     

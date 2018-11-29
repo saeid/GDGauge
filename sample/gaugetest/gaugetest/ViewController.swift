@@ -18,8 +18,8 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         
         // Create and instatiate the view and set parameters
         speed = GDGaugeView(frame: view.bounds)
-        speed.unitImage = #imageLiteral(resourceName: "fuel")
-        speed.unitImageTint = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
+        //        speed.unitImage = #imageLiteral(resourceName: "fuel")
+        //        speed.unitImageTint = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
         // Set main gauge view color
         // -> speed.baseColor = UIColor.cyan
         
@@ -54,7 +54,7 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         // -> speed.textColor = UIColor.black
         
         // Center indicator text
-        // -> speed.unitText = "mb/s"
+        speed.unitText = "mb/s"
         
         // Center indicator font
         // -> speed.unitTextFont = UIFont.systemFont(ofSize: 10)
@@ -87,7 +87,7 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         slider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -25).isActive = true
         slider.bottomAnchor.constraint(equalTo: speedLabel.topAnchor, constant: -35).isActive = true
         
-//        checkForSpeedTest()
+        //        checkForSpeedTest()
     }
     
     /// Moving handle using slider
