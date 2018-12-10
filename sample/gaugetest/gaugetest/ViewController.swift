@@ -95,6 +95,12 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         // Set .currentValue of GDGaugeView to move the handle
         print(sender.value)
         speed.currentValue = CGFloat(sender.value)
+        
+        if sender.value > 40{
+            speed.updateColors(with: UIColor.purple, unitsColor: UIColor.black)
+        }else{
+            speed.resetColors()
+        }
     }
     
     //// Testing with download file. showing download speed

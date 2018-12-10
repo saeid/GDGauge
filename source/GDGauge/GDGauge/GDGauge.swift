@@ -16,7 +16,9 @@ public final class GDGaugeView: UIView {
     fileprivate var absStartTime: CFAbsoluteTime?
     fileprivate var baseWidth: CGFloat = 10.0
     fileprivate var points: Int = 0
-    
+    fileprivate var firstIndicatorsSerie: [CAShapeLayer] = []
+    fileprivate var secondIndicatorsSerie: [CAShapeLayer] = []
+
     public var unitImage: UIImage? = nil
     public var unitImageTint: UIColor = UIColor.black
     public var showBorder: Bool = true
@@ -57,6 +59,32 @@ public final class GDGaugeView: UIView {
         drawPoints()
     }
     
+    public func updateColors(with color: UIColor, unitsColor: UIColor){
+        UIView.animate(withDuration: 0.4) {
+            self.baseCircleShape.strokeColor = color.cgColor
+            self.handleShape.fillColor = color.cgColor
+            for layer in self.firstIndicatorsSerie{
+                layer.strokeColor = unitsColor.cgColor
+            }
+            for layer in self.secondIndicatorsSerie{
+                layer.strokeColor = unitsColor.cgColor
+            }
+        }
+    }
+    
+    public func resetColors(){
+        UIView.animate(withDuration: 0.4) {
+            self.baseCircleShape.strokeColor = self.baseColor.cgColor
+            self.handleShape.fillColor = self.handleColor.cgColor
+            for layer in self.firstIndicatorsSerie{
+                layer.strokeColor = self.sepratorColor.cgColor
+            }
+            for layer in self.secondIndicatorsSerie{
+                layer.strokeColor = self.sepratorColor.cgColor
+            }
+        }
+    }
+    
     private func drawBaseCircle(){
         let startRad: CGFloat = 360.0 - calculatedEndDegree
         let endRad: CGFloat = 360.0 - calculatedStartDegree
@@ -73,7 +101,6 @@ public final class GDGaugeView: UIView {
             borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: degreeToRadian(degree: startRad), endAngle: degreeToRadian(degree: endRad), clockwise: false).cgPath
         }
         baseCircleShape.path = borderPath
-        
         layer.addSublayer(baseCircleShape)
     }
     
@@ -184,6 +211,7 @@ public final class GDGaugeView: UIView {
             indicatorLayer.lineWidth = indicWidth
             
             layer.addSublayer(indicatorLayer)
+            firstIndicatorsSerie.append(indicatorLayer)
         }
     }
     
@@ -217,6 +245,7 @@ public final class GDGaugeView: UIView {
             indicatorLayer.lineWidth = indicWidth
             
             layer.addSublayer(indicatorLayer)
+            secondIndicatorsSerie.append(indicatorLayer)
         }
     }
     
