@@ -1,32 +1,19 @@
 # GDGauge
 
-Full Customizable, Beautiful gauge view.
-
-Completely written with ShapeLayers and CoreGraphic to get a most clean and smooth, everything!
-
-[ Now with more options to customize! ]
+Customizable, Beautiful Gauge View.   
+Using ShapeLayers and CoreGraphic for rendering the whole view to get great and smooth experience!
 
 ![1](https://user-images.githubusercontent.com/9967486/40322974-4ccd8c1e-5d49-11e8-9adc-8c8569335484.png)
 
-
-![2](https://user-images.githubusercontent.com/9967486/40007543-5107d6dc-57b2-11e8-834c-a1062ded1a7b.png)
-
-
-![gauge](https://user-images.githubusercontent.com/9967486/39946456-7a3569c4-5583-11e8-8e54-8e10ed4774ee.gif)
-
-
 # Requirements
-- Xcode 9+
-- Swift 4
-- iOS 8+
+- Xcode 10+
+- Swift 4.2
+- iOS 9+
 
 
 # Installation
-Install manually
-------
-Drag `GDGauge.swift` to your project and use!
 
-## Using Cocoapods
+## Cocoapods
 ```
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
@@ -36,67 +23,37 @@ target '<Your Target Name>' do
     pod 'GDGauge'
 end
 ```
-`pod update` then `pod install`
+    pod update
+    pod install
 
-# How to use
-
-```swift 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Create and instatiate the view and set parameters
-        speed = GDGaugeView(frame: view.bounds)
-        
-        // Set main gauge view color
-        speed.baseColor = UIColor.cyan
-        
-        // Show circle border
-        speed.showBorder = true
-        
-        // Show full circle border if .showBorder is set to true
-        speed.fullBorder = false
-        
-        // Set starting degree based on zero degree on bottom center of circle space
-        speed.startDegree = 45.0
-        
-        // Set ending degree based on zero degree on bottom center of circle space
-        speed.endDegree = 270.0
-
-        // Minimum value
-        speed.min = 0.0
-        
-        // Maximum value
-        speed.max = 16
-        
-        // Determine each step value
-        speed.stepValue = 4.0
-        
-        // Color of handle
-        speed.handleColor = UIColor.cyan
-        
-        // Color of seprators
-        speed.sepratorColor = UIColor.black
-        
-        // Color of texts
-        speed.textColor = UIColor.black
-        
-        // Center indicator text
-        speed.unitText = "mb/s"
-        
-        // Center indicator font
-        speed.unitTextFont = UIFont.systemFont(ofSize: 10)
-        
-        // Indicators text
-        speed.textFont = UIFont.systemFont(ofSize: 20)
-        view.addSubview(speed)
-
-        /// After configuring the component, call setupView() method to create the gauge view
-        speed.setupView() 
-
-    }
+# Usage
+```swift
+import GDGauge
 ```
 
-## Check sample project for details and lots of more info!
+Create an instance of GDGaugeView
+```swift
+var gaugeView: GDGaugeView = GDGaugeView(frame: view.bounds)
+```
+
+Set its properties
+```swift 
+gaugeView.baseColor = UIColor.cyan
+gaugeView.startDegree = 45.0        
+gaugeView.endDegree = 270.0
+gaugeView.min = 0.0
+gaugeView.max = 16
+gaugeView.unitText = "mb/s"
+
+...
+
+// Full properties list can be found on sample project
+```
+
+Build customized view
+```swift
+gaugeView.setupView() 
+```
 
 
 
