@@ -8,7 +8,7 @@
 import UIKit
 
 public final class GDGaugeView: UIView {
-    fileprivate var baseCircleShape: CAShapeLayer!
+    fileprivate var baseCircleShape: CAShapeLayer?
     fileprivate var handleShape: CAShapeLayer!
     fileprivate var calculatedStartDegree: CGFloat = 0.0
     fileprivate var calculatedEndDegree: CGFloat = 0.0
@@ -61,8 +61,8 @@ public final class GDGaugeView: UIView {
     
     public func updateColors(with color: UIColor, unitsColor: UIColor){
         UIView.animate(withDuration: 0.4) {
-            self.baseCircleShape.strokeColor = color.cgColor
-            self.handleShape.fillColor = color.cgColor
+            self.baseCircleShape?.strokeColor = color.cgColor
+            self.handleShape?.fillColor = color.cgColor
             for layer in self.firstIndicatorsSerie{
                 layer.strokeColor = unitsColor.cgColor
             }
@@ -74,8 +74,8 @@ public final class GDGaugeView: UIView {
     
     public func resetColors(){
         UIView.animate(withDuration: 0.4) {
-            self.baseCircleShape.strokeColor = self.baseColor.cgColor
-            self.handleShape.fillColor = self.handleColor.cgColor
+            self.baseCircleShape?.strokeColor = self.baseColor.cgColor
+            self.handleShape?.fillColor = self.handleColor.cgColor
             for layer in self.firstIndicatorsSerie{
                 layer.strokeColor = self.sepratorColor.cgColor
             }
@@ -90,9 +90,9 @@ public final class GDGaugeView: UIView {
         let endRad: CGFloat = 360.0 - calculatedStartDegree
         
         baseCircleShape = CAShapeLayer()
-        baseCircleShape.fillColor = nil
-        baseCircleShape.strokeColor = baseColor.cgColor
-        baseCircleShape.lineWidth = baseWidth
+        baseCircleShape?.fillColor = nil
+        baseCircleShape?.strokeColor = baseColor.cgColor
+        baseCircleShape?.lineWidth = baseWidth
         
         var borderPath: CGPath!
         if fullBorder{
@@ -100,13 +100,14 @@ public final class GDGaugeView: UIView {
         }else{
             borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: degreeToRadian(degree: startRad), endAngle: degreeToRadian(degree: endRad), clockwise: false).cgPath
         }
-        baseCircleShape.path = borderPath
-        layer.addSublayer(baseCircleShape)
+        baseCircleShape?.path = borderPath
+        guard let _ = baseCircleShape else { return }
+        layer.addSublayer(baseCircleShape!)
     }
     
     private func drawHandle(){
         handleShape = CAShapeLayer()
-        handleShape.fillColor = handleColor.cgColor
+        handleShape?.fillColor = handleColor.cgColor
         
         let baseRad = degreeToRadian(degree: finalValue)
         let leftAngle = degreeToRadian(degree: 90 + finalValue)
@@ -136,9 +137,9 @@ public final class GDGaugeView: UIView {
         handlePath.addLine(to: endPoint)
         handlePath.addLine(to: rightPoint)
         
-        handleShape.path = handlePath.cgPath
-        handleShape.anchorPoint = centerPoint
-        handleShape.path = handlePath.cgPath
+        handleShape?.path = handlePath.cgPath
+        handleShape?.anchorPoint = centerPoint
+        handleShape?.path = handlePath.cgPath
         layer.addSublayer(handleShape)
         
         absStartTime = CFAbsoluteTimeGetCurrent()
@@ -175,7 +176,7 @@ public final class GDGaugeView: UIView {
         handlePath.addLine(to: endPoint)
         handlePath.addLine(to: rightPoint)
         
-        handleShape.path = handlePath.cgPath
+        handleShape?.path = handlePath.cgPath
     }
     
     private func drawPoints(){
