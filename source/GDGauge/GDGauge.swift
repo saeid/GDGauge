@@ -16,6 +16,42 @@ public final class GDGaugeView: UIView {
     fileprivate var innerIndicatorsShapes: [CAShapeLayer] = []
     fileprivate var outerIndicatorsShapes: [CAShapeLayer] = []
     
+    @available(swift, obsoleted: 5.0, renamed: "unitImageTintColor")
+    public var unitImageTint: UIColor = UIColor.black
+    
+    @available(swift, obsoleted: 5.0, renamed: "showContainerBorder")
+    public var showBorder: Bool = true
+    
+    @available(swift, obsoleted: 5.0, renamed: "fullCircleContainerBorder")
+    public var fullBorder: Bool = false
+    
+    @available(swift, obsoleted: 5.0, renamed: "sectionsGapValue")
+    public var stepValue: CGFloat = 20
+    
+    @available(swift, obsoleted: 5.0, renamed: "minValue")
+    public var min: CGFloat = 0
+    
+    @available(swift, obsoleted: 5.0, renamed: "maxValue")
+    public var max: CGFloat = 220
+    
+    @available(swift, obsoleted: 5.0, renamed: "containerColor")
+    public var baseColor: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
+    
+    @available(swift, obsoleted: 5.0, renamed: "indicatorsColor")
+    public var sepratorColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
+    
+    @available(swift, obsoleted: 5.0, renamed: "indicatorsValuesColor")
+    public var textColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
+    
+    @available(swift, obsoleted: 5.0, renamed: "unitTitle")
+    public var unitText: String = "km/h"
+    
+    @available(swift, obsoleted: 5.0, renamed: "unitTitleFont")
+    public var unitTextFont: UIFont = UIFont.systemFont(ofSize: 12)
+    
+    @available(swift, obsoleted: 5.0, renamed: "indicatorsFont")
+    public var textFont: UIFont = UIFont.systemFont(ofSize: 16)
+    
     // MARK: - Container properties
     public var containerBorderWidth: CGFloat!
     public var showContainerBorder: Bool!
@@ -34,11 +70,11 @@ public final class GDGaugeView: UIView {
     
     // MARK: - Other properties
     public var startDegree: CGFloat!
-    public var endDegree: CGFloat = 315.0
-    public var sectionsGapValue: CGFloat = 20
-    public var minValue: CGFloat = 0
-    public var maxValue: CGFloat = 220
-    public var currentValue: CGFloat = 0
+    public var endDegree: CGFloat!
+    public var sectionsGapValue: CGFloat!
+    public var minValue: CGFloat!
+    public var maxValue: CGFloat!
+    public var currentValue: CGFloat!
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,36 +97,99 @@ public final class GDGaugeView: UIView {
         return 270.0 - endDegree + 360
     }
     
+    /*******************DEPRECATED*********************************/
+    @available(*, deprecated, message: "This method is deprecated and will be removed in next updates. Please check README file for full details")
+    public func setupView(){
+        backgroundColor = UIColor.clear
+    
+        if currentValue == nil {
+            currentValue = 0.0
+        }
+        if startDegree == nil {
+            startDegree = 45
+        }
+        if endDegree == nil {
+            endDegree = 270
+        }
+        if minValue == nil {
+            minValue = 0
+        }
+        if maxValue == nil {
+            maxValue = 100
+        }
+        if sectionsGapValue == nil {
+            sectionsGapValue = 20
+        }
+        if containerBorderWidth == nil {
+            containerBorderWidth = 10
+        }
+        if containerColor == nil {
+            containerColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
+        }
+        if handleColor == nil {
+            handleColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1)
+        }
+        if showContainerBorder == nil {
+            showContainerBorder = true
+        }
+        if fullCircleContainerBorder == nil {
+            fullCircleContainerBorder = false
+        }
+        if indicatorsFont == nil {
+            indicatorsFont = UIFont.systemFont(ofSize: 16)
+        }
+        if indicatorsColor == nil {
+            indicatorsColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
+        }
+        if indicatorsValuesColor == nil {
+            indicatorsValuesColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
+        }
+        if unitImageTintColor == nil {
+            unitImageTintColor = UIColor.black
+        }
+        if unitTitleFont == nil {
+            unitTitleFont = UIFont.systemFont(ofSize: 16)
+        }
+        
+        if showContainerBorder {
+            drawContainerShape()
+        }
+        drawHandleShape()
+        drawIndicators()
+    }
+    /**************************************************************/
+    
     // MARK: - Setup and build Gauge View
     /**
      Setup gauge properties and its characteristics
-        - Parameters:
-            - startDegree: Starting position in degrees. 0 is bottom center in coordinate system moving clockwise
-            - endDegree: Ending position in degrees
-            - sectionGap: Gap between each section in the container
-            - minValue: Minimum value of the gauge. This will be the `startDegree` value
-            - maxValue: Maximum value of the gauge. This will be the `endDegree` value
+     - Parameters:
+         - startDegree: Starting position in degrees. 0 is bottom center in coordinate system moving clockwise
+         - endDegree: Ending position in degrees
+         - sectionGap: Gap between each section in the container
+         - minValue: Minimum value of the gauge. This will be the `startDegree` value
+         - maxValue: Maximum value of the gauge. This will be the `endDegree` value
      */
-    public func setupGuage(startDegree: CGFloat, endDegree: CGFloat, sectionGap: CGFloat, minValue: CGFloat, maxValue: CGFloat) -> Self {
+    public func setupGuage(startDegree: CGFloat, endDegree: CGFloat, sectionGap: CGFloat, minValue: CGFloat, maxValue: CGFloat, currentValue: CGFloat = 0.0) -> Self {
         self.startDegree = startDegree
         self.endDegree = endDegree
         self.sectionsGapValue = sectionGap
         self.minValue = minValue
         self.maxValue = maxValue
+        self.currentValue = currentValue
         return self
     }
     
     /**
      Setup gauge view container characteristics
-        - Parameters:
-            - width: Thickness of the container
-            - color: Color of the container
-            - handleColor: Color of the handle
-            - shouldShowContainerBorder: Show/hide the container. If set to `false` only indicators will be shown.
-            - shouldShowFullCircle: Fill the gap between start and end of the gauge
-            - indicatorsColor: Color of indicators
-            - indicatorsValuesColor: Color of indicator texts
-            - indicatorsFont: Font of indicator texts
+     - Parameters:
+         - width: Thickness of the container
+         - color: Color of the container
+         - handleColor: Color of the handle
+         - shouldShowContainerBorder: Show/hide the container. If set to `false` only indicators will be shown.
+         - shouldShowFullCircle: Fill the gap between start and end of the gauge
+         - indicatorsColor: Color of indicators
+         - indicatorsValuesColor: Color of indicator texts
+         - indicatorsFont: Font of indicator texts
      */
     public func setupContainer(width: CGFloat = 10,
                                color: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1),
@@ -113,9 +212,9 @@ public final class GDGaugeView: UIView {
     
     /**
      This is to add an image for the unit value. Note if this is set, unit text will be ignored.
-        - Parameters:
-            - image: Unit image
-            - tintColor: Unit image tint color
+     - Parameters:
+         - image: Unit image
+         - tintColor: Unit image tint color
      */
     public func setupUnitImage(image: UIImage,
                                tintColor: UIColor = UIColor.black) -> Self {
@@ -126,9 +225,9 @@ public final class GDGaugeView: UIView {
     
     /**
      This is to add a title for the unit value. Note if unit type is set to *image mode* this will be ignored.
-        - Parameters:
-            - title: Text for the unit
-            - font: Font used for the text
+     - Parameters:
+         - title: Text for the unit
+         - font: Font used for the text
      */
     public func setupUnitTitle(title: String,
                                font: UIFont = UIFont.systemFont(ofSize: 12)) -> Self {
@@ -149,11 +248,14 @@ public final class GDGaugeView: UIView {
     // MARK: - Update UI
     /**
      For updating colors if a limit is reached.
-        - Parameters:
-            - containerColor: New color of container
-            - indicatorsColor: New color of indicators
+     - Parameters:
+         - containerColor: New color of container
+         - indicatorsColor: New color of indicators
      */
     public func updateColors(containerColor: UIColor, indicatorsColor: UIColor) {
+        if containerShape == nil {
+            fatalError("Make sure to set `showContainerBorder` to true before using this function")
+        }
         UIView.animate(withDuration: 0.4) {
             self.containerShape.strokeColor = containerColor.cgColor
             self.handleShape.fillColor = containerColor.cgColor
@@ -168,6 +270,9 @@ public final class GDGaugeView: UIView {
     
     /// Reset to initial colors if colors are changed with `updateColors`
     public func resetColors() {
+        if containerShape == nil {
+            fatalError("Make sure to set `showContainerBorder` to true before using this function")
+        }
         UIView.animate(withDuration: 0.4) {
             self.containerShape.strokeColor = self.containerColor.cgColor
             self.handleShape.fillColor = self.handleColor.cgColor
@@ -437,6 +542,7 @@ public final class GDGaugeView: UIView {
     }
     
     fileprivate func addImageUnitType(point: CGPoint) {
+        if unitTitle == nil { return }
         let imgSize = CGSize(width: 20, height: 20)
         let unitRect = CGRect(x: point.x - (imgSize.width / 2), y: point.y + 45, width: imgSize.width, height: imgSize.height)
         
