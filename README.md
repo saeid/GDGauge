@@ -1,13 +1,13 @@
-# GDGauge
+# GDGauge - Customizable Gauge View
 
-Customizable, Beautiful Gauge View.   
-Using ShapeLayers and CoreGraphic for rendering the whole view to get great and smooth experience!
+Easy to use, highly customizable gauge view.   
+
 
 ![1](https://user-images.githubusercontent.com/9967486/40322974-4ccd8c1e-5d49-11e8-9adc-8c8569335484.png)
 
 # Requirements
-- Xcode 10+
-- Swift 4.2
+- Xcode 11+
+- Swift 5
 - iOS 9+
 
 
@@ -36,27 +36,43 @@ Create an instance of GDGaugeView
 var gaugeView: GDGaugeView = GDGaugeView(frame: view.bounds)
 ```
 
-Set its properties
+Setup, customize and build the view
 ```swift 
-gaugeView.baseColor = UIColor.cyan
-gaugeView.startDegree = 45.0        
-gaugeView.endDegree = 270.0
-gaugeView.min = 0.0
-gaugeView.max = 16
-gaugeView.unitText = "mb/s"
-
-...
-
-// Full properties list can be found on sample project
+        gaugeView
+            .setupGuage(startDegree: CGFloat,
+                        endDegree: CGFloat,
+                        sectionGap: CGFloat,
+                        minValue: CGFloat,
+                        maxValue: CGFloat)
+            .setupContainer(width: CGFloat,
+                            color: UIColor,
+                            handleColor: UIColor,
+                            shouldShowContainerBorder: Bool,
+                            shouldShowFullCircle: Bool,
+                            indicatorsColor: UIColor,
+                            indicatorsValuesColor: UIColor,
+                            indicatorsFont: UIFont)
+            .setupUnitTitle(title: String,
+                            font: UIFont)
+            .buildGauge()
 ```
 
-Build customized view
+### Other methods
+To update the handle value
 ```swift
-gaugeView.setupView() 
+gaugeView.updateValueTo(CGFloat)
 ```
 
+To update colors when a limit is reached
+```swift
+gaugeView.updateColors(containerColor: UIColor,
+                        indicatorsColor: UIColor)
+```
 
+To reset to initial colors
+```swift
+gaugeView.resetColors()
+```
 
 ## Licence
-
 GDGauge is available under the MIT license. See the [LICENSE.txt](https://github.com/saeid/GDGauge/blob/master/LICENSE) file for more info.
