@@ -8,34 +8,37 @@
 import UIKit
 
 public final class GDGaugeView: UIView {
-    fileprivate var baseCircleShape: CAShapeLayer?
+    // MARK: - Private properties
+    fileprivate var containerShape: CAShapeLayer!
     fileprivate var handleShape: CAShapeLayer!
-    fileprivate var calculatedStartDegree: CGFloat = 0.0
-    fileprivate var calculatedEndDegree: CGFloat = 0.0
     fileprivate var displayLink: CADisplayLink?
     fileprivate var absStartTime: CFAbsoluteTime?
-    fileprivate var baseWidth: CGFloat = 10.0
-    fileprivate var points: Int = 0
-    fileprivate var firstIndicatorsSerie: [CAShapeLayer] = []
-    fileprivate var secondIndicatorsSerie: [CAShapeLayer] = []
-
-    public var unitImage: UIImage? = nil
-    public var unitImageTint: UIColor = UIColor.black
-    public var showBorder: Bool = true
-    public var fullBorder: Bool = false
-    public var startDegree: CGFloat = 45.0
+    fileprivate var innerIndicatorsShapes: [CAShapeLayer] = []
+    fileprivate var outerIndicatorsShapes: [CAShapeLayer] = []
+    
+    // MARK: - Container properties
+    public var containerBorderWidth: CGFloat!
+    public var showContainerBorder: Bool!
+    public var fullCircleContainerBorder: Bool!
+    public var containerColor: UIColor!
+    public var handleColor: UIColor!
+    public var indicatorsFont: UIFont!
+    public var indicatorsColor: UIColor!
+    public var indicatorsValuesColor: UIColor!
+    
+    // MARK: - Unit properties
+    public var unitImage: UIImage?
+    public var unitImageTintColor: UIColor!
+    public var unitTitle: String?
+    public var unitTitleFont: UIFont!
+    
+    // MARK: - Other properties
+    public var startDegree: CGFloat!
     public var endDegree: CGFloat = 315.0
-    public var stepValue: CGFloat = 20
-    public var min: CGFloat = 0
-    public var max: CGFloat = 220
+    public var sectionsGapValue: CGFloat = 20
+    public var minValue: CGFloat = 0
+    public var maxValue: CGFloat = 220
     public var currentValue: CGFloat = 0
-    public var baseColor: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
-    public var handleColor: UIColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1)
-    public var sepratorColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
-    public var textColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
-    public var unitText: String = "km/h"
-    public var unitTextFont: UIFont = UIFont.systemFont(ofSize: 12)
-    public var textFont: UIFont = UIFont.systemFont(ofSize: 16)
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,81 +48,158 @@ public final class GDGaugeView: UIView {
         super.init(coder: aDecoder)
     }
     
-    public func setupView(){
-        points = Int((max - min) / stepValue)
-        calculatedStartDegree = 270.0 - startDegree
-        calculatedEndDegree = 270.0 - endDegree + 360
-        
-        backgroundColor = UIColor.clear
-        
-        if showBorder{
-            drawBaseCircle()
-        }
-        drawHandle()
-        drawPoints()
+    // MARK: - Container calculations
+    fileprivate var totalSeparationPoints: Int {
+        return Int((maxValue - minValue) / sectionsGapValue)
     }
     
-    public func updateColors(with color: UIColor, unitsColor: UIColor){
+    fileprivate var calculatedStartDegree: CGFloat {
+        return 270.0 - startDegree
+    }
+    
+    fileprivate var calculatedEndDegree: CGFloat {
+        return 270.0 - endDegree + 360
+    }
+    
+    // MARK: - Setup and build Gauge View
+    /**
+     Setup gauge properties and its characteristics
+        - Parameters:
+            - startDegree: Starting position in degrees. 0 is bottom center in coordinate system moving clockwise
+            - endDegree: Ending position in degrees
+            - sectionGap: Gap between each section in the container
+            - minValue: Minimum value of the gauge. This will be the `startDegree` value
+            - maxValue: Maximum value of the gauge. This will be the `endDegree` value
+     */
+    public func setupGuage(startDegree: CGFloat, endDegree: CGFloat, sectionGap: CGFloat, minValue: CGFloat, maxValue: CGFloat) -> Self {
+        self.startDegree = startDegree
+        self.endDegree = endDegree
+        self.sectionsGapValue = sectionGap
+        self.minValue = minValue
+        self.maxValue = maxValue
+        return self
+    }
+    
+    /**
+     Setup gauge view container characteristics
+        - Parameters:
+            - width: Thickness of the container
+            - color: Color of the container
+            - handleColor: Color of the handle
+            - shouldShowContainerBorder: Show/hide the container. If set to `false` only indicators will be shown.
+            - shouldShowFullCircle: Fill the gap between start and end of the gauge
+            - indicatorsColor: Color of indicators
+            - indicatorsValuesColor: Color of indicator texts
+            - indicatorsFont: Font of indicator texts
+     */
+    public func setupContainer(width: CGFloat = 10,
+                               color: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1),
+                               handleColor: UIColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1),
+                               shouldShowContainerBorder: Bool = true,
+                               shouldShowFullCircle: Bool = false,
+                               indicatorsColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1),
+                               indicatorsValuesColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1),
+                               indicatorsFont: UIFont = UIFont.systemFont(ofSize: 16)) -> Self {
+        self.containerBorderWidth = width
+        self.showContainerBorder = shouldShowContainerBorder
+        self.fullCircleContainerBorder = shouldShowFullCircle
+        self.indicatorsFont = indicatorsFont
+        self.containerColor = color
+        self.handleColor = handleColor
+        self.indicatorsValuesColor = indicatorsValuesColor
+        self.indicatorsColor = indicatorsColor
+        return self
+    }
+    
+    /**
+     This is to add an image for the unit value. Note if this is set, unit text will be ignored.
+        - Parameters:
+            - image: Unit image
+            - tintColor: Unit image tint color
+     */
+    public func setupUnitImage(image: UIImage,
+                               tintColor: UIColor = UIColor.black) -> Self {
+        self.unitImage = image
+        self.unitImageTintColor = tintColor
+        return self
+    }
+    
+    /**
+     This is to add a title for the unit value. Note if unit type is set to *image mode* this will be ignored.
+        - Parameters:
+            - title: Text for the unit
+            - font: Font used for the text
+     */
+    public func setupUnitTitle(title: String,
+                               font: UIFont = UIFont.systemFont(ofSize: 12)) -> Self {
+        self.unitTitle = title
+        self.unitTitleFont = font
+        return self
+    }
+    
+    /// Configure and build the view
+    public func buildGauge() {
+        if showContainerBorder {
+            drawContainerShape()
+        }
+        drawHandleShape()
+        drawIndicators()
+    }
+    
+    // MARK: - Update UI
+    /**
+     For updating colors if a limit is reached.
+        - Parameters:
+            - containerColor: New color of container
+            - indicatorsColor: New color of indicators
+     */
+    public func updateColors(containerColor: UIColor, indicatorsColor: UIColor) {
         UIView.animate(withDuration: 0.4) {
-            self.baseCircleShape?.strokeColor = color.cgColor
-            self.handleShape?.fillColor = color.cgColor
-            for layer in self.firstIndicatorsSerie{
-                layer.strokeColor = unitsColor.cgColor
-            }
-            for layer in self.secondIndicatorsSerie{
-                layer.strokeColor = unitsColor.cgColor
-            }
+            self.containerShape.strokeColor = containerColor.cgColor
+            self.handleShape.fillColor = containerColor.cgColor
+            self.innerIndicatorsShapes.forEach({
+                $0.strokeColor = indicatorsColor.cgColor
+            })
+            self.outerIndicatorsShapes.forEach({
+                $0.strokeColor = indicatorsColor.cgColor
+            })
         }
     }
     
-    public func resetColors(){
+    /// Reset to initial colors if colors are changed with `updateColors`
+    public func resetColors() {
         UIView.animate(withDuration: 0.4) {
-            self.baseCircleShape?.strokeColor = self.baseColor.cgColor
-            self.handleShape?.fillColor = self.handleColor.cgColor
-            for layer in self.firstIndicatorsSerie{
-                layer.strokeColor = self.sepratorColor.cgColor
-            }
-            for layer in self.secondIndicatorsSerie{
-                layer.strokeColor = self.sepratorColor.cgColor
-            }
+            self.containerShape.strokeColor = self.containerColor.cgColor
+            self.handleShape.fillColor = self.handleColor.cgColor
+            self.innerIndicatorsShapes.forEach({
+                $0.strokeColor = self.indicatorsColor.cgColor
+            })
+            self.outerIndicatorsShapes.forEach({
+                $0.strokeColor = self.indicatorsColor.cgColor
+            })
         }
     }
     
-    private func drawBaseCircle(){
-        let startRad: CGFloat = 360.0 - calculatedEndDegree
-        let endRad: CGFloat = 360.0 - calculatedStartDegree
-        
-        baseCircleShape = CAShapeLayer()
-        baseCircleShape?.fillColor = nil
-        baseCircleShape?.strokeColor = baseColor.cgColor
-        baseCircleShape?.lineWidth = baseWidth
-        
-        var borderPath: CGPath!
-        if fullBorder{
-            borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: false).cgPath
-        }else{
-            borderPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: (frame.width / 3), startAngle: degreeToRadian(degree: startRad), endAngle: degreeToRadian(degree: endRad), clockwise: false).cgPath
-        }
-        baseCircleShape?.path = borderPath
-        guard let _ = baseCircleShape else { return }
-        layer.addSublayer(baseCircleShape!)
+    /// Update handle value to new value
+    public func updateValueTo(_ value: CGFloat) {
+        self.currentValue = value
     }
     
-    private func drawHandle(){
-        handleShape = CAShapeLayer()
-        handleShape?.fillColor = handleColor.cgColor
-        
-        let baseRad = degreeToRadian(degree: finalValue)
-        let leftAngle = degreeToRadian(degree: 90 + finalValue)
-        let rightAngle = degreeToRadian(degree: -90 + finalValue)
+    @objc fileprivate func updateHandle(_ sender: CADisplayLink) {
+        let newPositionAngle = degreeToRadian(newPositionValue)
+        let leftAngle = degreeToRadian(90 + newPositionValue)
+        let rightAngle = degreeToRadian(-90 + newPositionValue)
         
         let startVal = frame.width / 4
         let length = CGFloat(5)
         let endVal = startVal + length
         let centerPoint = CGPoint(x: frame.width / 2, y: frame.height / 2)
-        let endPoint = CGPoint(x: cos(-baseRad) * endVal + centerPoint.x, y: sin(-baseRad) * endVal + centerPoint.y)
-        let rightPoint = CGPoint(x: cos(-leftAngle) * CGFloat(15) + centerPoint.x, y: sin(-leftAngle) * CGFloat(15) + centerPoint.y)
-        let leftPoint = CGPoint(x: cos(-rightAngle) * CGFloat(15) + centerPoint.x, y: sin(-rightAngle) * CGFloat(15) + centerPoint.y)
+        let endPoint = CGPoint(x: cos(-newPositionAngle) * endVal + centerPoint.x,
+                               y: sin(-newPositionAngle) * endVal + centerPoint.y)
+        let rightPoint = CGPoint(x: cos(-leftAngle) * CGFloat(15) + centerPoint.x,
+                                 y: sin(-leftAngle) * CGFloat(15) + centerPoint.y)
+        let leftPoint = CGPoint(x: cos(-rightAngle) * CGFloat(15) + centerPoint.x,
+                                y: sin(-rightAngle) * CGFloat(15) + centerPoint.y)
         
         let handlePath = UIBezierPath()
         handlePath.move(to: rightPoint)
@@ -129,7 +209,7 @@ public final class GDGaugeView: UIView {
         let diffx = midx - rightPoint.x
         let diffy = midy - rightPoint.y
         let angle = (atan2(diffy, diffx) * CGFloat((180 / Double.pi))) - 90
-        let targetRad = degreeToRadian(degree: angle)
+        let targetRad = degreeToRadian(angle)
         let newX = midx - 20 * cos(targetRad)
         let newY = midy - 20 * sin(targetRad)
         
@@ -137,9 +217,73 @@ public final class GDGaugeView: UIView {
         handlePath.addLine(to: endPoint)
         handlePath.addLine(to: rightPoint)
         
-        handleShape?.path = handlePath.cgPath
-        handleShape?.anchorPoint = centerPoint
-        handleShape?.path = handlePath.cgPath
+        handleShape.path = handlePath.cgPath
+    }
+    
+    // MARK: - Draw Gauge
+    fileprivate func drawContainerShape() {
+        let startDegree: CGFloat = 360.0 - calculatedEndDegree
+        let endDegree: CGFloat = 360.0 - calculatedStartDegree
+        
+        containerShape = CAShapeLayer()
+        containerShape.fillColor = nil
+        containerShape.strokeColor = containerColor.cgColor
+        containerShape.lineWidth = containerBorderWidth
+        
+        var containerPath: CGPath!
+        if fullCircleContainerBorder {
+            containerPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2),
+                                         radius: (frame.width / 3), startAngle: 0.0,
+                                         endAngle: CGFloat(Double.pi * 2),
+                                         clockwise: false).cgPath
+        } else {
+            containerPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2),
+                                         radius: (frame.width / 3),
+                                         startAngle: degreeToRadian(startDegree),
+                                         endAngle: degreeToRadian(endDegree), clockwise: false).cgPath
+        }
+        containerShape?.path = containerPath
+        layer.addSublayer(containerShape)
+    }
+    
+    fileprivate func drawHandleShape() {
+        handleShape = CAShapeLayer()
+        handleShape.fillColor = handleColor.cgColor
+        
+        let baseDegree = degreeToRadian(newPositionValue)
+        let leftAngle = degreeToRadian(90 + newPositionValue)
+        let rightAngle = degreeToRadian(-90 + newPositionValue)
+        
+        let startVal = frame.width / 4
+        let length = CGFloat(5)
+        let endVal = startVal + length
+        let centerPoint = CGPoint(x: frame.width / 2, y: frame.height / 2)
+        let endPoint = CGPoint(x: cos(-baseDegree) * endVal + centerPoint.x,
+                               y: sin(-baseDegree) * endVal + centerPoint.y)
+        let rightPoint = CGPoint(x: cos(-leftAngle) * CGFloat(15) + centerPoint.x,
+                                 y: sin(-leftAngle) * CGFloat(15) + centerPoint.y)
+        let leftPoint = CGPoint(x: cos(-rightAngle) * CGFloat(15) + centerPoint.x,
+                                y: sin(-rightAngle) * CGFloat(15) + centerPoint.y)
+        
+        let handlePath = UIBezierPath()
+        handlePath.move(to: rightPoint)
+        
+        let midx = rightPoint.x + ((leftPoint.x - rightPoint.x) / 2)
+        let midy = rightPoint.y + ((leftPoint.y - rightPoint.y) / 2)
+        let diffx = midx - rightPoint.x
+        let diffy = midy - rightPoint.y
+        let angle = (atan2(diffy, diffx) * CGFloat((180 / Double.pi))) - 90
+        let targetRad = degreeToRadian(angle)
+        let newX = midx - 20 * cos(targetRad)
+        let newY = midy - 20 * sin(targetRad)
+        
+        handlePath.addQuadCurve(to: leftPoint, controlPoint: CGPoint(x: newX, y: newY))
+        handlePath.addLine(to: endPoint)
+        handlePath.addLine(to: rightPoint)
+        
+        handleShape.path = handlePath.cgPath
+        handleShape.anchorPoint = centerPoint
+        handleShape.path = handlePath.cgPath
         layer.addSublayer(handleShape)
         
         absStartTime = CFAbsoluteTimeGetCurrent()
@@ -147,60 +291,31 @@ public final class GDGaugeView: UIView {
         displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
     
-    @objc func updateHandle(_ sender: CADisplayLink){
-        let baseRad = degreeToRadian(degree: finalValue)
-        let leftAngle = degreeToRadian(degree: 90 + finalValue)
-        let rightAngle = degreeToRadian(degree: -90 + finalValue)
-        
-        let startVal = frame.width / 4
-        let length = CGFloat(5)
-        let endVal = startVal + length
-        let centerPoint = CGPoint(x: frame.width / 2, y: frame.height / 2)
-        let endPoint = CGPoint(x: cos(-baseRad) * endVal + centerPoint.x, y: sin(-baseRad) * endVal + centerPoint.y)
-        let rightPoint = CGPoint(x: cos(-leftAngle) * CGFloat(15) + centerPoint.x, y: sin(-leftAngle) * CGFloat(15) + centerPoint.y)
-        let leftPoint = CGPoint(x: cos(-rightAngle) * CGFloat(15) + centerPoint.x, y: sin(-rightAngle) * CGFloat(15) + centerPoint.y)
-        
-        let handlePath = UIBezierPath()
-        handlePath.move(to: rightPoint)
-        
-        let midx = rightPoint.x + ((leftPoint.x - rightPoint.x) / 2)
-        let midy = rightPoint.y + ((leftPoint.y - rightPoint.y) / 2)
-        let diffx = midx - rightPoint.x
-        let diffy = midy - rightPoint.y
-        let angle = (atan2(diffy, diffx) * CGFloat((180 / Double.pi))) - 90
-        let targetRad = degreeToRadian(degree: angle)
-        let newX = midx - 20 * cos(targetRad)
-        let newY = midy - 20 * sin(targetRad)
-        
-        handlePath.addQuadCurve(to: leftPoint, controlPoint: CGPoint(x: newX, y: newY))
-        handlePath.addLine(to: endPoint)
-        handlePath.addLine(to: rightPoint)
-        
-        handleShape?.path = handlePath.cgPath
-    }
-    
-    private func drawPoints(){
+    fileprivate func drawIndicators() {
         let center = CGPoint(x: frame.width / 2, y: frame.height / 2)
         
-        addFirstIndicators(centerPoint: center)
-        addSecondIndicators(centerPoint: center)
-        addTexts(centerPoint: center)
+        addInnerIndicators(centerPoint: center)
+        addOuterIndicators(centerPoint: center)
+        addTextLabels(centerPoint: center)
+        addUnitIndicator(centerPoint: center)
     }
     
-    private func addFirstIndicators(centerPoint: CGPoint){
-        for i in 0...points{
+    fileprivate func addInnerIndicators(centerPoint: CGPoint) {
+        for i in 0...totalSeparationPoints {
             let indicatorLayer = CAShapeLayer()
             indicatorLayer.frame = bounds
             
             let indicWidth = CGFloat(3)
             let indicLength = CGFloat(8)
             
-            let startVal = (frame.width / 3) * 0.95
-            let endRad = startVal + indicLength
-            let baseAngle = degreeToRadian(degree: calcDegrees(point: CGFloat(i)))
+            let startValue = (frame.width / 3) * 0.95
+            let endValue = startValue + indicLength
+            let baseAngle = degreeToRadian(calculateDegree(for: CGFloat(i)))
             
-            let startPoint = CGPoint(x: cos(-baseAngle) * startVal + centerPoint.x, y: sin(-baseAngle) * startVal + centerPoint.y)
-            let endPoint = CGPoint(x: cos(-baseAngle) * endRad+centerPoint.x, y: sin(-baseAngle) * endRad + centerPoint.y)
+            let startPoint = CGPoint(x: cos(-baseAngle) * startValue + centerPoint.x,
+                                     y: sin(-baseAngle) * startValue + centerPoint.y)
+            let endPoint = CGPoint(x: cos(-baseAngle) * endValue+centerPoint.x,
+                                   y: sin(-baseAngle) * endValue + centerPoint.y)
             
             let indicatorPath = UIBezierPath()
             indicatorPath.move(to: startPoint)
@@ -208,33 +323,35 @@ public final class GDGaugeView: UIView {
             
             indicatorLayer.path = indicatorPath.cgPath
             indicatorLayer.fillColor = UIColor.clear.cgColor
-            indicatorLayer.strokeColor = sepratorColor.cgColor
+            indicatorLayer.strokeColor = indicatorsColor.cgColor
             indicatorLayer.lineWidth = indicWidth
             
             layer.addSublayer(indicatorLayer)
-            firstIndicatorsSerie.append(indicatorLayer)
+            innerIndicatorsShapes.append(indicatorLayer)
         }
     }
     
-    private func addSecondIndicators(centerPoint: CGPoint){
-        for i in 0...points * 10{
+    fileprivate func addOuterIndicators(centerPoint: CGPoint) {
+        for i in 0...totalSeparationPoints * 10 {
             let indicatorLayer = CAShapeLayer()
             indicatorLayer.frame = bounds
             
-            let indicWidth = CGFloat(1)
-            let indicLength = CGFloat(2)
+            let indicatorWidth = CGFloat(1)
+            let indicatorLength = CGFloat(2)
             
-            var startVal = (frame.width / 3) * 0.88
-            var endRad = startVal + indicLength
+            var startValue = (frame.width / 3) * 0.88
+            var endValue = startValue + indicatorLength
             
-            if (CGFloat(i) / 10).truncatingRemainder(dividingBy: 1) == 0.5{
-                startVal = (frame.width / 3) * 0.84
-                endRad = (startVal + indicLength) + 10
+            if (CGFloat(i) / 10).truncatingRemainder(dividingBy: 1) == 0.5 {
+                startValue = (frame.width / 3) * 0.84
+                endValue = (startValue + indicatorLength) + 10
             }
-            let baseAngle = degreeToRadian(degree: calcDegrees(point: CGFloat(CGFloat(i) / 10)))
+            let baseAngle = degreeToRadian(calculateDegree(for: CGFloat(CGFloat(i) / 10)))
             
-            let startPoint = CGPoint(x: cos(-baseAngle) * startVal + centerPoint.x, y: sin(-baseAngle) * startVal + centerPoint.y)
-            let endPoint = CGPoint(x: cos(-baseAngle) * endRad+centerPoint.x, y: sin(-baseAngle) * endRad + centerPoint.y)
+            let startPoint = CGPoint(x: cos(-baseAngle) * startValue + centerPoint.x,
+                                     y: sin(-baseAngle) * startValue + centerPoint.y)
+            let endPoint = CGPoint(x: cos(-baseAngle) * endValue+centerPoint.x,
+                                   y: sin(-baseAngle) * endValue + centerPoint.y)
             
             let indicatorPath = UIBezierPath()
             indicatorPath.move(to: startPoint)
@@ -242,82 +359,89 @@ public final class GDGaugeView: UIView {
             
             indicatorLayer.path = indicatorPath.cgPath
             indicatorLayer.fillColor = UIColor.clear.cgColor
-            indicatorLayer.strokeColor = sepratorColor.cgColor
-            indicatorLayer.lineWidth = indicWidth
+            indicatorLayer.strokeColor = indicatorsColor.cgColor
+            indicatorLayer.lineWidth = indicatorWidth
             
             layer.addSublayer(indicatorLayer)
-            secondIndicatorsSerie.append(indicatorLayer)
+            outerIndicatorsShapes.append(indicatorLayer)
         }
     }
     
-    private func addTexts(centerPoint: CGPoint){
-        for i in 0...points{
+    fileprivate func addTextLabels(centerPoint: CGPoint) {
+        for i in 0...totalSeparationPoints {
             let endValue = (frame.width / 3) * 1.03
             
-            let baseRad = degreeToRadian(degree: calcDegrees(point: CGFloat(i)))
-            let endPoint = CGPoint(x: cos(-baseRad) * endValue+centerPoint.x, y: sin(-baseRad) * endValue + centerPoint.y)
+            let baseRad = degreeToRadian(calculateDegree(for: CGFloat(i)))
+            let endPoint = CGPoint(x: cos(-baseRad) * endValue + centerPoint.x,
+                                   y: sin(-baseRad) * endValue + centerPoint.y)
             
-            var indicValue: CGFloat = 0
-            indicValue = stepValue * CGFloat(i) + min
+            var indicatorValue: CGFloat = 0
+            indicatorValue = sectionsGapValue * CGFloat(i) + minValue
             
-            var indicValueStr : String = ""
-            if indicValue.truncatingRemainder(dividingBy: 1) == 0{
-                indicValueStr = String(Int(indicValue))
-            }else{
-                indicValueStr = String(Double(indicValue))
+            var indicatorStringValue : String = ""
+            if indicatorValue.truncatingRemainder(dividingBy: 1) == 0{
+                indicatorStringValue = String(Int(indicatorValue))
+            } else {
+                indicatorStringValue = String(Double(indicatorValue))
             }
-            let size: CGSize = textSize(str: indicValueStr, font: textFont)
+            let size: CGSize = textSize(for: indicatorStringValue, font: indicatorsFont)
             
             let xOffset = abs(cos(baseRad)) * size.width * 0.5
             let yOffset = abs(sin(baseRad)) * size.height * 0.5
             let textPadding = CGFloat(5.0)
             let textOffset = sqrt(xOffset * xOffset + yOffset * yOffset) + textPadding
-            let textCenter = CGPoint(x: cos(-baseRad) * textOffset + endPoint.x, y: sin(-baseRad) * textOffset + endPoint.y)
-            let textRect = CGRect(x: textCenter.x - size.width * 0.5, y: textCenter.y - size.height * 0.5, width: size.width, height: size.height)
+            let textCenter = CGPoint(x: cos(-baseRad) * textOffset + endPoint.x,
+                                     y: sin(-baseRad) * textOffset + endPoint.y)
+            let textRect = CGRect(x: textCenter.x - size.width * 0.5,
+                                  y: textCenter.y - size.height * 0.5,
+                                  width: size.width,
+                                  height: size.height)
             
             let textLayer = CATextLayer()
             textLayer.contentsScale = UIScreen.main.scale
             textLayer.frame = textRect
-            textLayer.string = indicValueStr
-            textLayer.font = unitTextFont
-            textLayer.fontSize = unitTextFont.pointSize
-            textLayer.foregroundColor = textColor.cgColor
+            textLayer.string = indicatorStringValue
+            textLayer.font = unitTitleFont
+            textLayer.fontSize = unitTitleFont.pointSize
+            textLayer.foregroundColor = indicatorsValuesColor.cgColor
             
             layer.addSublayer(textLayer)
         }
-        addUnit(centerPoint: centerPoint)
     }
     
-    private func addUnit(centerPoint: CGPoint){
-        if let _ = unitImage{
-            addImageUnit(point: centerPoint)
-        }else{
-            addTextUnit(point: centerPoint)
+    fileprivate func addUnitIndicator(centerPoint: CGPoint) {
+        if unitImage == nil {
+            addTextUnitType(point: centerPoint)
+        } else {
+            addImageUnitType(point: centerPoint)
         }
     }
     
-    private func addTextUnit(point: CGPoint){
+    fileprivate func addTextUnitType(point: CGPoint) {
         let unitTextLayer = CATextLayer()
-        unitTextLayer.font = unitTextFont
-        unitTextLayer.fontSize = unitTextFont.pointSize
-        let size = textSize(str: unitText, font: unitTextFont)
+        unitTextLayer.font = unitTitleFont
+        unitTextLayer.fontSize = unitTitleFont.pointSize
+        let size = textSize(for: unitTitle, font: unitTitleFont)
         
-        let unitStrRect = CGRect(x: point.x - (size.width / 2), y: point.y + 45, width: size.width, height: size.height)
+        let unitStrRect = CGRect(x: point.x - (size.width / 2),
+                                 y: point.y + 45,
+                                 width: size.width,
+                                 height: size.height)
         
         unitTextLayer.contentsScale = UIScreen.main.scale
         unitTextLayer.frame = unitStrRect
-        unitTextLayer.string = unitText
-        unitTextLayer.foregroundColor = textColor.cgColor
+        unitTextLayer.string = unitTitle
+        unitTextLayer.foregroundColor = indicatorsValuesColor.cgColor
         
         layer.addSublayer(unitTextLayer)
     }
     
-    private func addImageUnit(point: CGPoint){
+    fileprivate func addImageUnitType(point: CGPoint) {
         let imgSize = CGSize(width: 20, height: 20)
         let unitRect = CGRect(x: point.x - (imgSize.width / 2), y: point.y + 45, width: imgSize.width, height: imgSize.height)
         
         let imgLayer = CALayer()
-        let myImage = unitImage!.maskWithColor(color: unitImageTint)!.cgImage
+        let myImage = unitImage!.maskWithColor(color: unitImageTintColor)!.cgImage
         imgLayer.frame = unitRect
         imgLayer.contents = myImage
         imgLayer.contentsGravity = CALayerContentsGravity.resizeAspect
@@ -325,53 +449,56 @@ public final class GDGaugeView: UIView {
     }
 }
 
-///MARK: - calcs
-extension GDGaugeView{
-    fileprivate var finalValue: CGFloat{
-        if currentValue > max{
-            currentValue = max
+/// MARK: - Size Calculations
+extension GDGaugeView {
+    fileprivate var newPositionValue: CGFloat {
+        if currentValue > maxValue {
+            currentValue = maxValue
         }
-        return calculatedStartDegree - (currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))) / max
+        return calculatedStartDegree - (currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))) / maxValue
     }
     
-    fileprivate func textSize(str: String, font: UIFont) -> CGSize{
-        let attrib = [NSAttributedString.Key.font: font]
-        return str.size(withAttributes: attrib)
+    fileprivate func textSize(for string: String?, font: UIFont) -> CGSize {
+        let attribute = [NSAttributedString.Key.font: font]
+        return string?.size(withAttributes: attribute) ?? .zero
     }
     
-    fileprivate func calcDegrees(point: CGFloat) -> CGFloat{
-        if point == 0{
+    fileprivate func calculateDegree(for point: CGFloat) -> CGFloat {
+        if point == 0 {
             return calculatedStartDegree
-        }else if point == CGFloat(points){
+        } else if point == CGFloat(totalSeparationPoints) {
             return calculatedEndDegree
-        }else{
-            return calculatedStartDegree - ((360.0 - (calculatedEndDegree - calculatedStartDegree)) / CGFloat(points)) * CGFloat(point)
+        } else {
+            return calculatedStartDegree - ((360.0 - (calculatedEndDegree - calculatedStartDegree)) / CGFloat(totalSeparationPoints)) * point
         }
     }
     
-    fileprivate func degreeToRadian(degree: CGFloat) -> CGFloat{
+    fileprivate func degreeToRadian(_ degree: CGFloat) -> CGFloat {
         return CGFloat(degree * CGFloat(Double.pi / 180.0))
     }
 }
 
 extension UIImage {
-    func maskWithColor(color: UIColor) -> UIImage?{
-        let maskImage = cgImage!
+    func maskWithColor(color: UIColor) -> UIImage? {
+        guard let maskImage = cgImage else {
+            fatalError("Can not get image data")
+        }
         let width = size.width
         let height = size.height
         let bounds = CGRect(x: 0, y: 0, width: width, height: height)
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-        let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
-        
+        guard let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
+            fatalError("Can not create the context")
+        }
         context.clip(to: bounds, mask: maskImage)
         context.setFillColor(color.cgColor)
         context.fill(bounds)
         
-        if let cgImage = context.makeImage(){
+        if let cgImage = context.makeImage() {
             return UIImage(cgImage: cgImage)
-        }else{
+        } else {
             return nil
         }
     }
