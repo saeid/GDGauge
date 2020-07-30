@@ -12,7 +12,7 @@ s.platform     = :ios
 s.ios.deployment_target  = '9.0'
 s.requires_arc = true
 s.swift_version = '5.0'
-s.source_files = 'source/GDGauge/**/*.{swift}'
+s.source_files = 'Sources/GDGauge/**/*.{swift}'
 s.frameworks = 'UIKit'
 
 end
