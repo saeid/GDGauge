@@ -10,18 +10,16 @@
 
 # Installation
 
-## Cocoapods
-```
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '9.0'
-use_frameworks!
+## Swift Package Manager
 
-target '<Your Target Name>' do
-    pod 'GDGauge'
-end
+```swift
+.package(url: "https://github.com/saeid/GDGauge.git", from: "1.2.1")
 ```
-    pod update
-    pod install
+
+## Cocoapods
+```ruby
+pod 'GDGauge'
+```
 
 # Usage
 
