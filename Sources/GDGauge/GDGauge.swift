@@ -102,13 +102,13 @@ public final class GDGaugeView: UIView {
      */
     public func setupContainer(
         width: CGFloat = 10,
-        color: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1),
-        handleColor: UIColor = UIColor(red: 0 / 255, green: 98 / 255, blue: 91 / 255, alpha: 1),
+        color: UIColor = DefaultUI.Container.color,
+        handleColor: UIColor = DefaultUI.Container.handleColor,
         shouldShowContainerBorder: Bool = true,
         shouldShowFullCircle: Bool = false,
-        indicatorsColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1),
-        indicatorsValuesColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1),
-        indicatorsFont: UIFont = UIFont.systemFont(ofSize: 16)
+        indicatorsColor: UIColor = DefaultUI.Container.indicatorsColor,
+        indicatorsValuesColor: UIColor = DefaultUI.Container.indicatorValuesColor,
+        indicatorsFont: UIFont = DefaultUI.Container.indicatorsFont
     ) -> Self {
         self.containerBorderWidth = width
         self.showContainerBorder = shouldShowContainerBorder
@@ -127,21 +127,25 @@ public final class GDGaugeView: UIView {
      - image: Unit image
      - tintColor: Unit image tint color
      */
-    public func setupUnitImage(image: UIImage,
-                               tintColor: UIColor = UIColor.black) -> Self {
+    public func setupUnitImage(
+        image: UIImage,
+        tintColor: UIColor = DefaultUI.Unit.imageTint
+    ) -> Self {
         self.unitImage = image
         self.unitImageTintColor = tintColor
         return self
     }
-    
+
     /**
      This is to add a title for the unit value. Note if unit type is set to *image mode* this will be ignored.
      - Parameters:
      - title: Text for the unit
      - font: Font used for the text
      */
-    public func setupUnitTitle(title: String,
-                               font: UIFont = UIFont.systemFont(ofSize: 12)) -> Self {
+    public func setupUnitTitle(
+        title: String,
+        font: UIFont = DefaultUI.Unit.font
+    ) -> Self {
         self.unitTitle = title
         self.unitTitleFont = font
         return self
