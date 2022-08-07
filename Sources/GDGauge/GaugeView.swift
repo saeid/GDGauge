@@ -1,5 +1,5 @@
 //
-//  GDGaugeView.swift
+//  GaugeView.swift
 //
 //  Created by Saeid Basirnia on 18.04.2018.
 //  Copyright © 2018 Saeid. All rights reserved.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class GDGaugeView: UIView {
+public final class GaugeView: UIView {
     // MARK: - Private properties
     fileprivate var containerShape: CAShapeLayer!
     fileprivate var handleShape: CAShapeLayer!
@@ -39,7 +39,9 @@ public final class GDGaugeView: UIView {
     fileprivate var minValue: CGFloat!
     fileprivate var maxValue: CGFloat!
     fileprivate var currentValue: CGFloat!
-    
+
+    fileprivate var calculations: Calculations!
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -85,6 +87,15 @@ public final class GDGaugeView: UIView {
         self.minValue = minValue
         self.maxValue = maxValue
         self.currentValue = currentValue
+
+        self.calculations = .init(
+            minValue: minValue,
+            maxValue: maxValue,
+            sectionsGapValue: sectionGap,
+            startDegree: startDegree,
+            endDegree: endDegree
+        )
+
         return self
     }
     
@@ -206,9 +217,15 @@ public final class GDGaugeView: UIView {
     }
     
     @objc fileprivate func updateHandle(_ sender: CADisplayLink) {
-        let newPositionAngle = degreeToRadian(newPositionValue)
-        let leftAngle = degreeToRadian(90 + newPositionValue)
-        let rightAngle = degreeToRadian(-90 + newPositionValue)
+        let newPositionAngle = calculations
+            .getNewPosition(currentValue)
+            .radian
+        let leftAngle = calculations
+            .getNewPosition(currentValue, diff: 90)
+            .radian
+        let rightAngle = calculations
+            .getNewPosition(currentValue, diff: -90)
+            .radian
         
         let startVal = frame.width / 4
         let length = CGFloat(5)
@@ -229,7 +246,7 @@ public final class GDGaugeView: UIView {
         let diffx = midx - rightPoint.x
         let diffy = midy - rightPoint.y
         let angle = (atan2(diffy, diffx) * CGFloat((180 / Double.pi))) - 90
-        let targetRad = degreeToRadian(angle)
+        let targetRad = angle.radian
         let newX = midx - 20 * cos(targetRad)
         let newY = midy - 20 * sin(targetRad)
         
@@ -259,8 +276,8 @@ public final class GDGaugeView: UIView {
         } else {
             containerPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2),
                                          radius: (frame.width / 3),
-                                         startAngle: degreeToRadian(startDegree),
-                                         endAngle: degreeToRadian(endDegree), clockwise: false).cgPath
+                                         startAngle: startDegree.radian,
+                                         endAngle: endDegree.radian, clockwise: false).cgPath
         }
         containerShape?.path = containerPath
         layer.addSublayer(containerShape)
@@ -270,10 +287,17 @@ public final class GDGaugeView: UIView {
         handleShape = CAShapeLayer()
         handleShape.fillColor = handleColor.cgColor
         
-        let baseDegree = degreeToRadian(newPositionValue)
-        let leftAngle = degreeToRadian(90 + newPositionValue)
-        let rightAngle = degreeToRadian(-90 + newPositionValue)
-        
+        let baseDegree = calculations
+            .getNewPosition(currentValue)
+            .radian
+        let leftAngle = calculations
+            .getNewPosition(currentValue, diff: 90)
+            .radian
+
+        let rightAngle = calculations
+            .getNewPosition(currentValue, diff: -90)
+            .radian
+
         let startVal = frame.width / 4
         let length = CGFloat(5)
         let endVal = startVal + length
@@ -293,7 +317,7 @@ public final class GDGaugeView: UIView {
         let diffx = midx - rightPoint.x
         let diffy = midy - rightPoint.y
         let angle = (atan2(diffy, diffx) * CGFloat((180 / Double.pi))) - 90
-        let targetRad = degreeToRadian(angle)
+        let targetRad = angle.radian
         let newX = midx - 20 * cos(targetRad)
         let newY = midy - 20 * sin(targetRad)
         
@@ -330,7 +354,9 @@ public final class GDGaugeView: UIView {
             
             let startValue = (frame.width / 3) * 0.95
             let endValue = startValue + indicLength
-            let baseAngle = degreeToRadian(calculateDegree(for: CGFloat(i)))
+            let baseAngle = calculations
+                .calculateDegree(for: CGFloat(i))
+                .radian
             
             let startPoint = CGPoint(x: cos(-baseAngle) * startValue + centerPoint.x,
                                      y: sin(-baseAngle) * startValue + centerPoint.y)
@@ -366,7 +392,9 @@ public final class GDGaugeView: UIView {
                 startValue = (frame.width / 3) * 0.84
                 endValue = (startValue + indicatorLength) + 10
             }
-            let baseAngle = degreeToRadian(calculateDegree(for: CGFloat(CGFloat(i) / 10)))
+            let baseAngle = calculations
+                .calculateDegree(for: CGFloat(CGFloat(i) / 10))
+                .radian
             
             let startPoint = CGPoint(x: cos(-baseAngle) * startValue + centerPoint.x,
                                      y: sin(-baseAngle) * startValue + centerPoint.y)
@@ -391,7 +419,9 @@ public final class GDGaugeView: UIView {
         for i in 0...totalSeparationPoints {
             let endValue = (frame.width / 3) * 1.03
             
-            let baseRad = degreeToRadian(calculateDegree(for: CGFloat(i)))
+            let baseRad = calculations
+                .calculateDegree(for: CGFloat(i))
+                .radian
             let endPoint = CGPoint(x: cos(-baseRad) * endValue + centerPoint.x,
                                    y: sin(-baseRad) * endValue + centerPoint.y)
             
@@ -470,31 +500,10 @@ public final class GDGaugeView: UIView {
     }
 }
 
-/// MARK: - Size Calculations
-extension GDGaugeView {
-    fileprivate var newPositionValue: CGFloat {
-        if currentValue > maxValue {
-            currentValue = maxValue
-        }
-        return calculatedStartDegree - (currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))) / maxValue
-    }
-    
+/// MARK: - Font Size Calculations
+extension GaugeView {
     fileprivate func textSize(for string: String?, font: UIFont) -> CGSize {
         let attribute = [NSAttributedString.Key.font: font]
         return string?.size(withAttributes: attribute) ?? .zero
-    }
-    
-    fileprivate func calculateDegree(for point: CGFloat) -> CGFloat {
-        if point == 0 {
-            return calculatedStartDegree
-        } else if point == CGFloat(totalSeparationPoints) {
-            return calculatedEndDegree
-        } else {
-            return calculatedStartDegree - ((360.0 - (calculatedEndDegree - calculatedStartDegree)) / CGFloat(totalSeparationPoints)) * point
-        }
-    }
-    
-    fileprivate func degreeToRadian(_ degree: CGFloat) -> CGFloat {
-        return CGFloat(degree * CGFloat(Double.pi / 180.0))
     }
 }

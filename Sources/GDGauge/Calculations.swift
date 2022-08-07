@@ -26,12 +26,12 @@ struct Calculations {
         return 270.0 - endDegree + 360
     }
 
-    func getNewPosition(currentValue: CGFloat) -> CGFloat {
+    func getNewPosition(_ currentValue: CGFloat, diff: CGFloat = 0) -> CGFloat {
         guard currentValue < maxValue else {
             return maxValue
         }
         let convertedDegree = currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))
-        return calculatedStartDegree - (convertedDegree / maxValue)
+        return (calculatedStartDegree - (convertedDegree / maxValue)) + diff
     }
 
     func calculateDegree(for point: CGFloat) -> CGFloat {
@@ -41,9 +41,5 @@ struct Calculations {
         return point == CGFloat(totalSeparationPoints)
         ? calculatedEndDegree
         : calculatedStartDegree - ((360.0 - (calculatedEndDegree - calculatedStartDegree)) / CGFloat(totalSeparationPoints)) * point
-    }
-
-    func degreeToRadian(_ degree: CGFloat) -> CGFloat {
-        CGFloat(degree * CGFloat(.pi / 180.0))
     }
 }
