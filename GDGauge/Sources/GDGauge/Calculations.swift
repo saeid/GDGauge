@@ -27,7 +27,7 @@ struct Calculations {
     }
 
     func getNewPosition(_ currentValue: CGFloat, diff: CGFloat = 0) -> CGFloat {
-        guard currentValue < maxValue else {
+        guard currentValue <= maxValue else {
             return maxValue
         }
         let convertedDegree = currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))

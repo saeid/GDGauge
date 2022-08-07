@@ -264,7 +264,7 @@ public final class GaugeView: UIView {
     
     /// Update handle value to new value
     public func updateValueTo(_ value: CGFloat) {
-        self.currentValue = value
+        currentValue = value
     }
     
     @objc private func updateHandle(_ sender: CADisplayLink) {
