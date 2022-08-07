@@ -30,27 +30,32 @@ import GDGauge
 
 ### Create an instance of GDGaugeView
 ```swift
-var gaugeView: GDGaugeView = GDGaugeView(frame: view.bounds)
+var gaugeView = GDGaugeView(frame: view.bounds)
 ```
 
 ### Setup, customize and build the view
 ```swift 
         gaugeView
-            .setupGuage(startDegree: CGFloat,
-                        endDegree: CGFloat,
-                        sectionGap: CGFloat,
-                        minValue: CGFloat,
-                        maxValue: CGFloat)
-            .setupContainer(width: CGFloat,
-                            color: UIColor,
-                            handleColor: UIColor,
-                            shouldShowContainerBorder: Bool,
-                            shouldShowFullCircle: Bool,
-                            indicatorsColor: UIColor,
-                            indicatorsValuesColor: UIColor,
-                            indicatorsFont: UIFont)
-            .setupUnitTitle(title: String,
-                            font: UIFont)
+            .setupGuage(
+                startDegree: CGFloat,
+                endDegree: CGFloat,
+                sectionGap: CGFloat,
+                minValue: CGFloat,
+                maxValue: CGFloat
+            )
+            .setupContainer(
+                width: CGFloat,
+                color: UIColor,
+                handleColor: UIColor,
+                options: GaugeOptions,
+                indicatorsColor: UIColor,
+                indicatorsValuesColor: UIColor,
+                indicatorsFont: UIFont
+            )
+            .setupUnitTitle(
+                title: String,
+                font: UIFont
+            )
             .buildGauge()
 ```
 
@@ -61,8 +66,10 @@ gaugeView.updateValueTo(CGFloat)
 
 ### To update colors when a limit is reached
 ```swift
-gaugeView.updateColors(containerColor: UIColor,
-                        indicatorsColor: UIColor)
+gaugeView.updateColors(
+    containerColor: UIColor,
+    indicatorsColor: UIColor
+)
 ```
 
 ### To reset to initial colors
