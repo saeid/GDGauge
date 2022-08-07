@@ -5,7 +5,7 @@
 //  Created by Saeid on 2022-08-07.
 //
 
-import Foundation
+import UIKit
 
 struct Calculations {
     let minValue: CGFloat
