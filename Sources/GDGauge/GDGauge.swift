@@ -16,65 +16,29 @@ public final class GDGaugeView: UIView {
     fileprivate var innerIndicatorsShapes: [CAShapeLayer] = []
     fileprivate var outerIndicatorsShapes: [CAShapeLayer] = []
     
-    @available(swift, obsoleted: 5.0, renamed: "unitImageTintColor")
-    public var unitImageTint: UIColor = UIColor.black
-    
-    @available(swift, obsoleted: 5.0, renamed: "showContainerBorder")
-    public var showBorder: Bool = true
-    
-    @available(swift, obsoleted: 5.0, renamed: "fullCircleContainerBorder")
-    public var fullBorder: Bool = false
-    
-    @available(swift, obsoleted: 5.0, renamed: "sectionsGapValue")
-    public var stepValue: CGFloat = 20
-    
-    @available(swift, obsoleted: 5.0, renamed: "minValue")
-    public var min: CGFloat = 0
-    
-    @available(swift, obsoleted: 5.0, renamed: "maxValue")
-    public var max: CGFloat = 220
-    
-    @available(swift, obsoleted: 5.0, renamed: "containerColor")
-    public var baseColor: UIColor = UIColor(red: 0 / 255, green: 72 / 255, blue: 67 / 255, alpha: 1)
-    
-    @available(swift, obsoleted: 5.0, renamed: "indicatorsColor")
-    public var sepratorColor: UIColor = UIColor(red: 0 / 255, green: 174 / 255, blue: 162 / 255, alpha: 1)
-    
-    @available(swift, obsoleted: 5.0, renamed: "indicatorsValuesColor")
-    public var textColor: UIColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1)
-    
-    @available(swift, obsoleted: 5.0, renamed: "unitTitle")
-    public var unitText: String = "km/h"
-    
-    @available(swift, obsoleted: 5.0, renamed: "unitTitleFont")
-    public var unitTextFont: UIFont = UIFont.systemFont(ofSize: 12)
-    
-    @available(swift, obsoleted: 5.0, renamed: "indicatorsFont")
-    public var textFont: UIFont = UIFont.systemFont(ofSize: 16)
-    
     // MARK: - Container properties
-    public var containerBorderWidth: CGFloat!
-    public var showContainerBorder: Bool!
-    public var fullCircleContainerBorder: Bool!
-    public var containerColor: UIColor!
-    public var handleColor: UIColor!
-    public var indicatorsFont: UIFont!
-    public var indicatorsColor: UIColor!
-    public var indicatorsValuesColor: UIColor!
+    fileprivate var containerBorderWidth: CGFloat!
+    fileprivate var showContainerBorder: Bool!
+    fileprivate var fullCircleContainerBorder: Bool!
+    fileprivate var containerColor: UIColor!
+    fileprivate var handleColor: UIColor!
+    fileprivate var indicatorsFont: UIFont!
+    fileprivate var indicatorsColor: UIColor!
+    fileprivate var indicatorsValuesColor: UIColor!
     
     // MARK: - Unit properties
-    public var unitImage: UIImage?
-    public var unitImageTintColor: UIColor!
-    public var unitTitle: String?
-    public var unitTitleFont: UIFont!
+    fileprivate var unitImage: UIImage?
+    fileprivate var unitImageTintColor: UIColor!
+    fileprivate var unitTitle: String?
+    fileprivate var unitTitleFont: UIFont!
     
     // MARK: - Other properties
-    public var startDegree: CGFloat!
-    public var endDegree: CGFloat!
-    public var sectionsGapValue: CGFloat!
-    public var minValue: CGFloat!
-    public var maxValue: CGFloat!
-    public var currentValue: CGFloat!
+    fileprivate var startDegree: CGFloat!
+    fileprivate var endDegree: CGFloat!
+    fileprivate var sectionsGapValue: CGFloat!
+    fileprivate var minValue: CGFloat!
+    fileprivate var maxValue: CGFloat!
+    fileprivate var currentValue: CGFloat!
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
