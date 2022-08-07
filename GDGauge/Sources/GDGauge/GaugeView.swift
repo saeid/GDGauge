@@ -60,13 +60,16 @@ public final class GaugeView: UIView {
 
     // MARK: - Setup and build Gauge View
     /**
-     Setup gauge properties and its characteristics
+
+     Setup gauge values.
+
      - Parameters:
-     - startDegree: Starting position in degrees. 0 is bottom center in coordinate system moving clockwise
-     - endDegree: Ending position in degrees
-     - sectionGap: Gap between each section in the container
-     - minValue: Minimum value of the gauge. This will be the `startDegree` value
-     - maxValue: Maximum value of the gauge. This will be the `endDegree` value
+         - startDegree: Starting position in degrees. 0 is bottom center in coordinate system moving clockwise
+         - endDegree: Ending position in degrees
+         - sectionGap: Gap between each section in the container
+         - minValue: Minimum value of the gauge. This will be the `startDegree` value
+         - maxValue: Maximum value of the gauge. This will be the `endDegree` value
+
      */
     public func setupGuage(
         startDegree: CGFloat,
@@ -93,18 +96,22 @@ public final class GaugeView: UIView {
 
         return self
     }
-    
+
     /**
-     Setup gauge view container characteristics
+
+     Setup gauge container UI.
+
      - Parameters:
-     - width: Thickness of the container
-     - color: Color of the container
-     - handleColor: Color of the handle
-     - shouldShowContainerBorder: Show/hide the container. If set to `false` only indicators will be shown.
-     - shouldShowFullCircle: Fill the gap between start and end of the gauge
-     - indicatorsColor: Color of indicators
-     - indicatorsValuesColor: Color of indicator texts
-     - indicatorsFont: Font of indicator texts
+         - width: Thickness of the container
+         - color: Color of the container
+         - handleColor: Color of the handle
+         - shouldShowContainerBorder: Show/hide the container. If set to `false` only indicators will be shown.
+         - shouldShowFullCircle: Fill the gap between start and end of the gauge
+         - indicatorsColor: Color of indicators
+         - indicatorsValuesColor: Color of indicator texts
+         - indicatorsFont: Font of indicator texts
+     - Warning: 'shouldShowContainerBorder' and 'shouldShowFullCircle' will be deprecated in next versions. Please update to use 'GaugeOptions' instead.
+
      */
     public func setupContainer(
         width: CGFloat = 10,
@@ -128,10 +135,13 @@ public final class GaugeView: UIView {
     }
     
     /**
-     This is to add an image for the unit value. Note if this is set, unit text will be ignored.
+
+     Setup unit icon for gauge view.
      - Parameters:
-     - image: Unit image
-     - tintColor: Unit image tint color
+         - image: Unit image
+         - tintColor: Unit image tint color
+     - Warning: If this is set, unit text will be ignored.
+
      */
     public func setupUnitImage(
         image: UIImage,
@@ -143,10 +153,13 @@ public final class GaugeView: UIView {
     }
 
     /**
-     This is to add a title for the unit value. Note if unit type is set to *image mode* this will be ignored.
+
+     Setup gauge view unit title.
      - Parameters:
-     - title: Text for the unit
-     - font: Font used for the text
+         - title: Text for the unit
+         - font: Font used for the text
+     - Warning: If unit type is set to *image mode* this will be ignored.
+
      */
     public func setupUnitTitle(
         title: String,
@@ -156,7 +169,7 @@ public final class GaugeView: UIView {
         self.unitTitleFont = font
         return self
     }
-    
+
     /// Configure and build the view
     public func buildGauge() {
         if showContainerBorder {
@@ -165,13 +178,17 @@ public final class GaugeView: UIView {
         drawHandleShape()
         drawIndicators()
     }
-    
+
     // MARK: - Update UI
+
     /**
+
      For updating colors if a limit is reached.
+
      - Parameters:
-     - containerColor: New color of container
-     - indicatorsColor: New color of indicators
+         - containerColor: New color of container
+         - indicatorsColor: New color of indicators
+     
      */
     public func updateColors(containerColor: UIColor, indicatorsColor: UIColor) {
         if containerShape == nil {
