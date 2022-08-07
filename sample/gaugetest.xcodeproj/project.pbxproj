@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		363AEB9A28A010040022195C /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363AEB9928A010040022195C /* UIImage+Extensions.swift */; };
 		364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6320A63D99009BCA62 /* AppDelegate.swift */; };
 		364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6520A63D99009BCA62 /* ViewController.swift */; };
 		364E5C6920A63D99009BCA62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6720A63D99009BCA62 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		363AEB9928A010040022195C /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		364E5C6020A63D99009BCA62 /* gaugetest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gaugetest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364E5C6320A63D99009BCA62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		364E5C6520A63D99009BCA62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -23,7 +25,7 @@
 		364E5C6A20A63D99009BCA62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		364E5C6D20A63D99009BCA62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		364E5C6F20A63D99009BCA62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3697261E24266D8E00A7353F /* GDGauge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GDGauge.swift; path = ../../Source/GDGauge/GDGauge.swift; sourceTree = "<group>"; };
+		3697261E24266D8E00A7353F /* GDGauge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GDGauge.swift; path = ../../Sources/GDGauge/GDGauge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				364E5C6A20A63D99009BCA62 /* Assets.xcassets */,
 				364E5C6C20A63D99009BCA62 /* LaunchScreen.storyboard */,
 				364E5C6F20A63D99009BCA62 /* Info.plist */,
+				363AEB9928A010040022195C /* UIImage+Extensions.swift */,
 			);
 			path = gaugetest;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 				3697261F24266D8E00A7353F /* GDGauge.swift in Sources */,
 				364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */,
 				364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */,
+				363AEB9A28A010040022195C /* UIImage+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
