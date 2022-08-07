@@ -9,38 +9,39 @@ import UIKit
 
 public final class GaugeView: UIView {
     // MARK: - Private properties
-    fileprivate var containerShape: CAShapeLayer!
-    fileprivate var handleShape: CAShapeLayer!
-    fileprivate var displayLink: CADisplayLink?
-    fileprivate var absStartTime: CFAbsoluteTime?
-    fileprivate var innerIndicatorsShapes: [CAShapeLayer] = []
-    fileprivate var outerIndicatorsShapes: [CAShapeLayer] = []
+    private var containerShape: CAShapeLayer!
+    private var handleShape: CAShapeLayer!
+    private var displayLink: CADisplayLink?
+    private var absStartTime: CFAbsoluteTime?
+    private var innerIndicatorsShapes: [CAShapeLayer] = []
+    private var outerIndicatorsShapes: [CAShapeLayer] = []
     
     // MARK: - Container properties
-    fileprivate var containerBorderWidth: CGFloat!
-    fileprivate var showContainerBorder: Bool!
-    fileprivate var fullCircleContainerBorder: Bool!
-    fileprivate var containerColor: UIColor!
-    fileprivate var handleColor: UIColor!
-    fileprivate var indicatorsFont: UIFont!
-    fileprivate var indicatorsColor: UIColor!
-    fileprivate var indicatorsValuesColor: UIColor!
+    private var containerBorderWidth: CGFloat!
+    private var showContainerBorder: Bool!
+    private var fullCircleContainerBorder: Bool!
+    private var containerColor: UIColor!
+    private var handleColor: UIColor!
+    private var indicatorsFont: UIFont!
+    private var indicatorsColor: UIColor!
+    private var indicatorsValuesColor: UIColor!
     
     // MARK: - Unit properties
-    fileprivate var unitImage: UIImage?
-    fileprivate var unitImageTintColor: UIColor!
-    fileprivate var unitTitle: String?
-    fileprivate var unitTitleFont: UIFont!
+    private var unitImage: UIImage?
+    private var unitImageTintColor: UIColor!
+    private var unitTitle: String?
+    private var unitTitleFont: UIFont!
     
     // MARK: - Other properties
-    fileprivate var startDegree: CGFloat!
-    fileprivate var endDegree: CGFloat!
-    fileprivate var sectionsGapValue: CGFloat!
-    fileprivate var minValue: CGFloat!
-    fileprivate var maxValue: CGFloat!
-    fileprivate var currentValue: CGFloat!
+    private var startDegree: CGFloat!
+    private var endDegree: CGFloat!
+    private var sectionsGapValue: CGFloat!
+    private var minValue: CGFloat!
+    private var maxValue: CGFloat!
+    private var currentValue: CGFloat!
 
-    fileprivate var calculations: Calculations!
+    // MARK: Dependencies
+    private var calculations: Calculations!
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,19 +49,6 @@ public final class GaugeView: UIView {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-    // MARK: - Container calculations
-    fileprivate var totalSeparationPoints: Int {
-        return Int((maxValue - minValue) / sectionsGapValue)
-    }
-    
-    fileprivate var calculatedStartDegree: CGFloat {
-        return 270.0 - startDegree
-    }
-    
-    fileprivate var calculatedEndDegree: CGFloat {
-        return 270.0 - endDegree + 360
     }
     
     // MARK: - Setup and build Gauge View
@@ -216,7 +204,7 @@ public final class GaugeView: UIView {
         self.currentValue = value
     }
     
-    @objc fileprivate func updateHandle(_ sender: CADisplayLink) {
+    @objc private func updateHandle(_ sender: CADisplayLink) {
         let newPositionAngle = calculations
             .getNewPosition(currentValue)
             .radian
@@ -258,9 +246,9 @@ public final class GaugeView: UIView {
     }
     
     // MARK: - Draw Gauge
-    fileprivate func drawContainerShape() {
-        let startDegree: CGFloat = 360.0 - calculatedEndDegree
-        let endDegree: CGFloat = 360.0 - calculatedStartDegree
+    private func drawContainerShape() {
+        let startDegree: CGFloat = 360.0 - calculations.calculatedEndDegree
+        let endDegree: CGFloat = 360.0 - calculations.calculatedStartDegree
         
         containerShape = CAShapeLayer()
         containerShape.fillColor = nil
@@ -283,7 +271,7 @@ public final class GaugeView: UIView {
         layer.addSublayer(containerShape)
     }
     
-    fileprivate func drawHandleShape() {
+    private func drawHandleShape() {
         handleShape = CAShapeLayer()
         handleShape.fillColor = handleColor.cgColor
         
@@ -335,7 +323,7 @@ public final class GaugeView: UIView {
         displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
     
-    fileprivate func drawIndicators() {
+    private func drawIndicators() {
         let center = CGPoint(x: frame.width / 2, y: frame.height / 2)
         
         addInnerIndicators(centerPoint: center)
@@ -344,8 +332,8 @@ public final class GaugeView: UIView {
         addUnitIndicator(centerPoint: center)
     }
     
-    fileprivate func addInnerIndicators(centerPoint: CGPoint) {
-        for i in 0...totalSeparationPoints {
+    private func addInnerIndicators(centerPoint: CGPoint) {
+        for i in 0...calculations.totalSeparationPoints {
             let indicatorLayer = CAShapeLayer()
             indicatorLayer.frame = bounds
             
@@ -377,8 +365,8 @@ public final class GaugeView: UIView {
         }
     }
     
-    fileprivate func addOuterIndicators(centerPoint: CGPoint) {
-        for i in 0...totalSeparationPoints * 10 {
+    private func addOuterIndicators(centerPoint: CGPoint) {
+        for i in 0...calculations.totalSeparationPoints * 10 {
             let indicatorLayer = CAShapeLayer()
             indicatorLayer.frame = bounds
             
@@ -415,8 +403,8 @@ public final class GaugeView: UIView {
         }
     }
     
-    fileprivate func addTextLabels(centerPoint: CGPoint) {
-        for i in 0...totalSeparationPoints {
+    private func addTextLabels(centerPoint: CGPoint) {
+        for i in 0...calculations.totalSeparationPoints {
             let endValue = (frame.width / 3) * 1.03
             
             let baseRad = calculations
@@ -459,7 +447,7 @@ public final class GaugeView: UIView {
         }
     }
     
-    fileprivate func addUnitIndicator(centerPoint: CGPoint) {
+    private func addUnitIndicator(centerPoint: CGPoint) {
         if unitImage == nil {
             addTextUnitType(point: centerPoint)
         } else {
@@ -467,7 +455,7 @@ public final class GaugeView: UIView {
         }
     }
     
-    fileprivate func addTextUnitType(point: CGPoint) {
+    private func addTextUnitType(point: CGPoint) {
         let unitTextLayer = CATextLayer()
         unitTextLayer.font = unitTitleFont
         unitTextLayer.fontSize = unitTitleFont.pointSize
@@ -486,7 +474,7 @@ public final class GaugeView: UIView {
         layer.addSublayer(unitTextLayer)
     }
     
-    fileprivate func addImageUnitType(point: CGPoint) {
+    private func addImageUnitType(point: CGPoint) {
         if unitTitle == nil { return }
         let imgSize = CGSize(width: 20, height: 20)
         let unitRect = CGRect(x: point.x - (imgSize.width / 2), y: point.y + 45, width: imgSize.width, height: imgSize.height)
@@ -502,7 +490,7 @@ public final class GaugeView: UIView {
 
 /// MARK: - Font Size Calculations
 extension GaugeView {
-    fileprivate func textSize(for string: String?, font: UIFont) -> CGSize {
+    private func textSize(for string: String?, font: UIFont) -> CGSize {
         let attribute = [NSAttributedString.Key.font: font]
         return string?.size(withAttributes: attribute) ?? .zero
     }
