@@ -10,17 +10,11 @@ let package = Package(
         .watchOS(.v5),
     ],
     products: [
-        .library(
-            name: "GDGauge",
-            targets: ["GDGauge"]),
+        .library(name: "GDGauge", targets: ["GDGauge"]),
     ],
     dependencies: [],
     targets: [
-        .target(
-            name: "GDGauge",
-            dependencies: []),
-        .testTarget(
-            name: "GDGaugeTests",
-            dependencies: ["GDGauge"]),
+        .target(name: "GDGauge", dependencies: []),
+        .testTarget(name: "GDGaugeTests", dependencies: ["GDGauge"]),
     ]
 )
