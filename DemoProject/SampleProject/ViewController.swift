@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GDGauge
 
 class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelegate {
     var gaugeView: GDGaugeView!

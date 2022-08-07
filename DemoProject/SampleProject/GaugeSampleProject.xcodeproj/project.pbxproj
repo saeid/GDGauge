@@ -7,25 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		363AEB9A28A010040022195C /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363AEB9928A010040022195C /* UIImage+Extensions.swift */; };
 		364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6320A63D99009BCA62 /* AppDelegate.swift */; };
 		364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364E5C6520A63D99009BCA62 /* ViewController.swift */; };
 		364E5C6920A63D99009BCA62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6720A63D99009BCA62 /* Main.storyboard */; };
 		364E5C6B20A63D99009BCA62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6A20A63D99009BCA62 /* Assets.xcassets */; };
 		364E5C6E20A63D99009BCA62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6C20A63D99009BCA62 /* LaunchScreen.storyboard */; };
-		3697261F24266D8E00A7353F /* GDGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3697261E24266D8E00A7353F /* GDGauge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		363AEB9928A010040022195C /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
-		364E5C6020A63D99009BCA62 /* gaugetest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gaugetest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		364E5C6020A63D99009BCA62 /* GaugeSampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaugeSampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364E5C6320A63D99009BCA62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		364E5C6520A63D99009BCA62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		364E5C6820A63D99009BCA62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		364E5C6A20A63D99009BCA62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		364E5C6D20A63D99009BCA62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		364E5C6F20A63D99009BCA62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3697261E24266D8E00A7353F /* GDGauge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GDGauge.swift; path = ../../Sources/GDGauge/GDGauge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +38,7 @@
 		364E5C5720A63D99009BCA62 = {
 			isa = PBXGroup;
 			children = (
-				364E5C6220A63D99009BCA62 /* gaugetest */,
+				364E5C6220A63D99009BCA62 /* SampleProject */,
 				364E5C6120A63D99009BCA62 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,32 +46,30 @@
 		364E5C6120A63D99009BCA62 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				364E5C6020A63D99009BCA62 /* gaugetest.app */,
+				364E5C6020A63D99009BCA62 /* GaugeSampleProject.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		364E5C6220A63D99009BCA62 /* gaugetest */ = {
+		364E5C6220A63D99009BCA62 /* SampleProject */ = {
 			isa = PBXGroup;
 			children = (
-				3697261E24266D8E00A7353F /* GDGauge.swift */,
 				364E5C6320A63D99009BCA62 /* AppDelegate.swift */,
 				364E5C6520A63D99009BCA62 /* ViewController.swift */,
 				364E5C6720A63D99009BCA62 /* Main.storyboard */,
 				364E5C6A20A63D99009BCA62 /* Assets.xcassets */,
 				364E5C6C20A63D99009BCA62 /* LaunchScreen.storyboard */,
 				364E5C6F20A63D99009BCA62 /* Info.plist */,
-				363AEB9928A010040022195C /* UIImage+Extensions.swift */,
 			);
-			path = gaugetest;
+			name = SampleProject;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		364E5C5F20A63D99009BCA62 /* gaugetest */ = {
+		364E5C5F20A63D99009BCA62 /* GaugeSampleProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 364E5C7220A63D99009BCA62 /* Build configuration list for PBXNativeTarget "gaugetest" */;
+			buildConfigurationList = 364E5C7220A63D99009BCA62 /* Build configuration list for PBXNativeTarget "GaugeSampleProject" */;
 			buildPhases = (
 				364E5C5C20A63D99009BCA62 /* Sources */,
 				364E5C5D20A63D99009BCA62 /* Frameworks */,
@@ -85,9 +79,9 @@
 			);
 			dependencies = (
 			);
-			name = gaugetest;
+			name = GaugeSampleProject;
 			productName = gaugetest;
-			productReference = 364E5C6020A63D99009BCA62 /* gaugetest.app */;
+			productReference = 364E5C6020A63D99009BCA62 /* GaugeSampleProject.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -106,7 +100,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 364E5C5B20A63D99009BCA62 /* Build configuration list for PBXProject "gaugetest" */;
+			buildConfigurationList = 364E5C5B20A63D99009BCA62 /* Build configuration list for PBXProject "GaugeSampleProject" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -119,7 +113,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				364E5C5F20A63D99009BCA62 /* gaugetest */,
+				364E5C5F20A63D99009BCA62 /* GaugeSampleProject */,
 			);
 		};
 /* End PBXProject section */
@@ -142,10 +136,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3697261F24266D8E00A7353F /* GDGauge.swift in Sources */,
 				364E5C6620A63D99009BCA62 /* ViewController.swift in Sources */,
 				364E5C6420A63D99009BCA62 /* AppDelegate.swift in Sources */,
-				363AEB9A28A010040022195C /* UIImage+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +316,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		364E5C5B20A63D99009BCA62 /* Build configuration list for PBXProject "gaugetest" */ = {
+		364E5C5B20A63D99009BCA62 /* Build configuration list for PBXProject "GaugeSampleProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				364E5C7020A63D99009BCA62 /* Debug */,
@@ -333,7 +325,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		364E5C7220A63D99009BCA62 /* Build configuration list for PBXNativeTarget "gaugetest" */ = {
+		364E5C7220A63D99009BCA62 /* Build configuration list for PBXNativeTarget "GaugeSampleProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				364E5C7320A63D99009BCA62 /* Debug */,
