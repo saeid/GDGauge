@@ -50,7 +50,14 @@ public final class GaugeView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
+    /**
+     Returns current value of the gauge
+     */
+    public var value: CGFloat {
+        currentValue
+    }
+
     // MARK: - Setup and build Gauge View
     /**
      Setup gauge properties and its characteristics
