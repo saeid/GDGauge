@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GaugeOptions {
+public enum GaugeOptions {
     case showContainerBorder
     case fullCircleContainerBorder
 }

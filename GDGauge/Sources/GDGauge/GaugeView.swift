@@ -18,14 +18,15 @@ public final class GaugeView: UIView {
     
     // MARK: - Container properties
     private var containerBorderWidth: CGFloat!
-    private var showContainerBorder: Bool!
-    private var fullCircleContainerBorder: Bool!
+    private var showContainerBorder = false
+    private var fullCircleContainerBorder = false
     private var containerColor: UIColor!
     private var handleColor: UIColor!
     private var indicatorsFont: UIFont!
     private var indicatorsColor: UIColor!
     private var indicatorsValuesColor: UIColor!
-    
+    private var options: [GaugeOptions] = [.showContainerBorder]
+
     // MARK: - Unit properties
     private var unitImage: UIImage?
     private var unitImageTintColor: UIColor!
@@ -133,7 +134,26 @@ public final class GaugeView: UIView {
         self.indicatorsColor = indicatorsColor
         return self
     }
-    
+
+    public func setupContainer(
+        width: CGFloat = 10,
+        color: UIColor = DefaultUI.Container.color,
+        handleColor: UIColor = DefaultUI.Container.handleColor,
+        options: [GaugeOptions],
+        indicatorsColor: UIColor = DefaultUI.Container.indicatorsColor,
+        indicatorsValuesColor: UIColor = DefaultUI.Container.indicatorValuesColor,
+        indicatorsFont: UIFont = DefaultUI.Container.indicatorsFont
+    ) -> Self {
+        self.containerBorderWidth = width
+        self.options = options
+        self.indicatorsFont = indicatorsFont
+        self.containerColor = color
+        self.handleColor = handleColor
+        self.indicatorsValuesColor = indicatorsValuesColor
+        self.indicatorsColor = indicatorsColor
+        return self
+    }
+
     /**
 
      Setup unit icon for gauge view.
@@ -172,7 +192,7 @@ public final class GaugeView: UIView {
 
     /// Configure and build the view
     public func buildGauge() {
-        if showContainerBorder {
+        if showContainerBorder || options.contains(.showContainerBorder) {
             drawContainerShape()
         }
         drawHandleShape()
@@ -280,7 +300,7 @@ public final class GaugeView: UIView {
         containerShape.lineWidth = containerBorderWidth
         
         var containerPath: CGPath!
-        if fullCircleContainerBorder {
+        if fullCircleContainerBorder || options.contains(.fullCircleContainerBorder) {
             containerPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2),
                                          radius: (frame.width / 3), startAngle: 0.0,
                                          endAngle: CGFloat(Double.pi * 2),
