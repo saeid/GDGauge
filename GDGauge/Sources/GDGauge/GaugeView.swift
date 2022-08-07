@@ -18,14 +18,14 @@ public final class GaugeView: UIView {
     
     // MARK: - Container properties
     private var containerBorderWidth: CGFloat!
-    private var showContainerBorder = false
+    private var showContainerBorder = true
     private var fullCircleContainerBorder = false
     private var containerColor: UIColor!
     private var handleColor: UIColor!
     private var indicatorsFont: UIFont!
     private var indicatorsColor: UIColor!
     private var indicatorsValuesColor: UIColor!
-    private var options: [GaugeOptions] = [.showContainerBorder]
+    private var options: [GaugeOptions]!
 
     // MARK: - Unit properties
     private var unitImage: UIImage?
@@ -135,11 +135,30 @@ public final class GaugeView: UIView {
         return self
     }
 
+    /**
+
+     Setup gauge container UI.
+
+     - Parameters:
+         - width: Thickness of the container
+         - color: Color of the container
+         - handleColor: Color of the handle
+         - options: *Default is .showContainerBorder*
+            - **shouldShowContainerBorder**: Show/hide the container. If not set, only indicators will be shown.
+
+            - **shouldShowFullCircle**: Fill the gap between start and end of the gauge.
+
+         - indicatorsColor: Color of indicators
+         - indicatorsValuesColor: Color of indicator texts
+         - indicatorsFont: Font of indicator texts
+
+     */
+
     public func setupContainer(
         width: CGFloat = 10,
         color: UIColor = DefaultUI.Container.color,
         handleColor: UIColor = DefaultUI.Container.handleColor,
-        options: [GaugeOptions],
+        options: [GaugeOptions] = [.showContainerBorder],
         indicatorsColor: UIColor = DefaultUI.Container.indicatorsColor,
         indicatorsValuesColor: UIColor = DefaultUI.Container.indicatorValuesColor,
         indicatorsFont: UIFont = DefaultUI.Container.indicatorsFont
