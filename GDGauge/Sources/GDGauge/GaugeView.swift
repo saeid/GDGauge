@@ -523,11 +523,12 @@ public final class GaugeView: UIView {
         unitTextLayer.font = unitTitleFont
         unitTextLayer.fontSize = unitTitleFont.pointSize
         let size = textSize(for: unitTitle, font: unitTitleFont)
-        
-        let unitStrRect = CGRect(x: point.x - (size.width / 2),
-                                 y: point.y + 45,
-                                 width: size.width,
-                                 height: size.height)
+        let unitStrRect = CGRect(
+            x: point.x - (size.width / 2),
+            y: point.y + 45,
+            width: size.width,
+            height: size.height
+        )
         
         unitTextLayer.contentsScale = UIScreen.main.scale
         unitTextLayer.frame = unitStrRect
@@ -538,9 +539,19 @@ public final class GaugeView: UIView {
     }
     
     private func addImageUnitType(point: CGPoint) {
-        if unitTitle == nil { return }
-        let imgSize = CGSize(width: 20, height: 20)
-        let unitRect = CGRect(x: point.x - (imgSize.width / 2), y: point.y + 45, width: imgSize.width, height: imgSize.height)
+        guard unitTitle != nil else {
+            return
+        }
+        let imgSize = CGSize(
+            width: DefaultUI.Unit.imageSize,
+            height: DefaultUI.Unit.imageSize
+        )
+        let unitRect = CGRect(
+            x: point.x - (imgSize.width / 2),
+            y: point.y + 45,
+            width: imgSize.width,
+            height: imgSize.height
+        )
         
         let imgLayer = CALayer()
         let myImage = unitImage!.maskWithColor(color: unitImageTintColor)!.cgImage

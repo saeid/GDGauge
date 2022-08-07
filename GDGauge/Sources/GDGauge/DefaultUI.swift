@@ -42,6 +42,7 @@ public enum DefaultUI {
 
     public enum Unit {
         public static let imageTint = UIColor.black
+        public static let imageSize = 20.0
         public static let font = UIFont.preferredFont(forTextStyle: .footnote)
     }
 }
