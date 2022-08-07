@@ -13,10 +13,10 @@
 ## Swift Package Manager
 
 ```swift
-.package(url: "https://github.com/saeid/GDGauge.git", from: "1.2.1")
+.package(url: "https://github.com/saeid/GDGauge.git", from: "2.0.0")
 ```
 
-## Cocoapods
+## Cocoapods (Not updated - Latest version "1.2.1")
 ```ruby
 pod 'GDGauge'
 ```
