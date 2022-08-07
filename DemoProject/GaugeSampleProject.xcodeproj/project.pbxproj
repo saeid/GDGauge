@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,11 @@
 		364E5C6920A63D99009BCA62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6720A63D99009BCA62 /* Main.storyboard */; };
 		364E5C6B20A63D99009BCA62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6A20A63D99009BCA62 /* Assets.xcassets */; };
 		364E5C6E20A63D99009BCA62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364E5C6C20A63D99009BCA62 /* LaunchScreen.storyboard */; };
+		36BB9FE228A02A69003BCA2E /* GDGauge in Frameworks */ = {isa = PBXBuildFile; productRef = 36BB9FE128A02A69003BCA2E /* GDGauge */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		363AEB9E28A0290F0022195C /* GDGauge */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GDGauge; path = ../GDGauge; sourceTree = "<group>"; };
 		364E5C6020A63D99009BCA62 /* GaugeSampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaugeSampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		364E5C6320A63D99009BCA62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		364E5C6520A63D99009BCA62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,17 +31,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36BB9FE228A02A69003BCA2E /* GDGauge in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		363AEB9D28A0290F0022195C /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				363AEB9E28A0290F0022195C /* GDGauge */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		364E5C5720A63D99009BCA62 = {
 			isa = PBXGroup;
 			children = (
-				364E5C6220A63D99009BCA62 /* SampleProject */,
+				363AEB9D28A0290F0022195C /* Packages */,
+				364E5C6220A63D99009BCA62 /* DemoProject */,
 				364E5C6120A63D99009BCA62 /* Products */,
+				36BB9FE028A02A69003BCA2E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,7 +64,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		364E5C6220A63D99009BCA62 /* SampleProject */ = {
+		364E5C6220A63D99009BCA62 /* DemoProject */ = {
 			isa = PBXGroup;
 			children = (
 				364E5C6320A63D99009BCA62 /* AppDelegate.swift */,
@@ -61,7 +74,14 @@
 				364E5C6C20A63D99009BCA62 /* LaunchScreen.storyboard */,
 				364E5C6F20A63D99009BCA62 /* Info.plist */,
 			);
-			name = SampleProject;
+			name = DemoProject;
+			sourceTree = "<group>";
+		};
+		36BB9FE028A02A69003BCA2E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -80,6 +100,9 @@
 			dependencies = (
 			);
 			name = GaugeSampleProject;
+			packageProductDependencies = (
+				36BB9FE128A02A69003BCA2E /* GDGauge */,
+			);
 			productName = gaugetest;
 			productReference = 364E5C6020A63D99009BCA62 /* GaugeSampleProject.app */;
 			productType = "com.apple.product-type.application";
@@ -91,7 +114,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "Saeid Basirnia";
 				TargetAttributes = {
 					364E5C5F20A63D99009BCA62 = {
@@ -189,6 +212,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -214,7 +238,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -249,6 +273,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -268,7 +293,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -282,8 +307,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = gaugetest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -300,8 +325,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = gaugetest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,6 +360,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36BB9FE128A02A69003BCA2E /* GDGauge */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GDGauge;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 364E5C5820A63D99009BCA62 /* Project object */;
 }

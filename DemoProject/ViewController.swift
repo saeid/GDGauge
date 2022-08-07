@@ -10,7 +10,7 @@ import UIKit
 import GDGauge
 
 class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelegate {
-    var gaugeView: GDGaugeView!
+    var gaugeView: GaugeView!
     var valueLabel: UILabel!
     var valueSlider: UISlider!
     
@@ -18,7 +18,7 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         super.viewDidLoad()
         
         // Build and customize gauge view
-        gaugeView = GDGaugeView(frame: view.bounds)
+        gaugeView = GaugeView(frame: view.bounds)
         view.addSubview(gaugeView)
         
         // To setup the gauge view
