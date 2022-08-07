@@ -23,8 +23,17 @@ class ViewController: UIViewController, URLSessionDelegate, URLSessionDataDelega
         
         // To setup the gauge view
         gaugeView
-            .setupGuage(startDegree: 45, endDegree: 315, sectionGap: 20, minValue: 0, maxValue: 300)
-            .setupContainer()
+            .setupGuage(
+                startDegree: 45,
+                endDegree: 315,
+                sectionGap: 20,
+                minValue: 0,
+                maxValue: 300
+            )
+            .setupContainer(options: [
+                .showContainerBorder,
+                .fullCircleContainerBorder
+            ])
             .setupUnitTitle(title: "KM/H")
             .buildGauge()
         
