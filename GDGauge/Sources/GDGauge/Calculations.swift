@@ -27,10 +27,14 @@ struct Calculations {
     }
 
     func getNewPosition(_ currentValue: CGFloat, diff: CGFloat = 0) -> CGFloat {
-        guard currentValue <= maxValue else {
-            return maxValue
+        var filteredCurrentValue = currentValue
+        if currentValue > maxValue {
+            filteredCurrentValue = maxValue
         }
-        let convertedDegree = currentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))
+        if currentValue < minValue {
+            filteredCurrentValue = minValue
+        }
+        let convertedDegree = filteredCurrentValue * (360.0 - (calculatedEndDegree - calculatedStartDegree))
         return (calculatedStartDegree - (convertedDegree / maxValue)) + diff
     }
 
